@@ -10,7 +10,7 @@ function [ response_struct ] = update_tags( ID, tags )
     APIToken = rino.authentication;
     
     %JSONify metadata_struct
-    metadatajson = rino.savejson('', rino.catstruct(struct('tags',char([tags,{''}, {''}])), struct('id', ID)), struct('Compact', 1))
+    metadatajson = rino.savejson('', rino.catstruct(struct('tags',char([tags,{''}, {''}])), struct('id', ID)), struct('Compact', 1));
 
         %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
