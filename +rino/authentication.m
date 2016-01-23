@@ -1,7 +1,7 @@
 function [ output_args ] = authentication( ~ )
 %authentication - returns the authentication token
 % 
-Token='f2b6963a4c48b5447ecdc066a6fcb1d6ffaef3c0';
+Token='df8f94649696abc16270369405a2f491b7c2cfd0';
 output_args=['Token ',Token];   
 
 end

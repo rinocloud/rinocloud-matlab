@@ -1,6 +1,5 @@
 function [ output ] = download(ID, varargin)
-% download -  downloads the file specifed by the object id to the current
-% working directory
+% download -  downloads the 
 %   Detailed explanation goes here
     
     checkID(ID);
@@ -50,7 +49,7 @@ function [ output ] = download(ID, varargin)
     %download data
     downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
     
-    %save to file or return binary data if requested
+    %dave to file or return binary data if requested
     if input.tofile == true
         fdl = fopen(fname,'wb');
         fwrite(fdl, downloadeddata);
