@@ -2,7 +2,12 @@ function [ output ] = download_last(number ,varargin)
 % download -  downloads the file specifed by the object id to the current
 % working directory
 %   Detailed explanation goes here
-    
+
+    %if only key-value pairs included, download most recent.
+    if mod(nargin,2)==0
+        number=1;
+    end
+
     checknumber(number);
 
     %search
@@ -25,9 +30,11 @@ function [ output ] = download_last(number ,varargin)
     
     output={};
     %Loop to multi_download
-    for tt=1:length(ids)
+    
+    for mm=1:length(ids)
         
-        ID=ids{tt};
+        
+        ID=ids{mm};
     
         % Set filename - Set file name if newname given, leave as original name if no name given
         metadata = rino.get_metadata(ID);
@@ -58,19 +65,22 @@ function [ output ] = download_last(number ,varargin)
         %download data
         downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
 
-        %dave to file or return binary data if requested
+        %save to file or return binary data if requested
+
         if input.tofile == true
             fdl = fopen(fname,'wb');
             fwrite(fdl, downloadeddata);
             fclose(fdl);
-            output=sprintf('Downloaded data saved to %s.',fname);
+            output=sprintf('Downloaded data saved.');
         else
-            output{tt} = downloadeddata;
+            output{mm} = downloadeddata;
         end
     end
     
     
-    
+    if length(output)==1
+        output=output{1};
+    end
     
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

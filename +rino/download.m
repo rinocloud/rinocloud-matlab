@@ -50,7 +50,7 @@ function [ output ] = download(ID, varargin)
     %download data
     downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
     
-    %dave to file or return binary data if requested
+    %save to file or return binary data if requested
     if input.tofile == true
         fdl = fopen(fname,'wb');
         fwrite(fdl, downloadeddata);
