@@ -26,7 +26,7 @@ function [ response_struct ] = upload(fname, varargin)
     
     %Set tags struct
     if sum(size(input.tags)) > 0
-        tagsstruct = struct('tags',char(input.tags));
+        tagsstruct = struct('tags',char([input.tags], {''}, {''})); 
     else
         tagsstruct = struct();
     end
