@@ -6,7 +6,7 @@ function [ output ] = download_last(number ,varargin)
     checknumber(number);
 
     %search
-    ids=rino.search_last(number);
+    ids=search_last(number);
     
     %Parse input
     p = inputParser;
@@ -23,8 +23,7 @@ function [ output ] = download_last(number ,varargin)
     % create http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
     
-    output={};
-    %Loop to multi_download
+    %Loop
     for tt=1:length(ids)
         
         ID=ids{tt};
@@ -65,7 +64,7 @@ function [ output ] = download_last(number ,varargin)
             fclose(fdl);
             output=sprintf('Downloaded data saved to %s.',fname);
         else
-            output{tt} = downloadeddata;
+            output = downloadeddata;
         end
     end
     
