@@ -1,24 +1,68 @@
-function [ output_args ] = upload(varargin)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+function [ response_struct ] = upload(fname, varargin)
+%upload - used to upload files to rinocloud
+%   Full description from MD text
 
-%Parse the input
-p = inputParser;
-addParamValue(p,'metadata','',@checkmetadata);
-addParamValue(p,'newname','',@checknewname);
-addParamValue(p,'parent','',@checkparent);
-addOptional(p,'loadbinary',false, @check01)
-addOptional(p,'casttotext',false, @check01)
-p.parse(varargin{:});
-output=p.Results;
+    %Parse the input and validate optional arguments
+    p = inputParser;
+    addParamValue(p,'metadata','',@checkmetadata);
+    addParamValue(p,'tags','',@checktags);
+    addParamValue(p,'newname','',@checknewname);
+    addParamValue(p,'parent','',@checkparent);
+    p.parse(varargin{:});
+    input=p.Results;
 
+    %Load binary data from file
+    fid = fopen(fname, 'rb');
+    binary_data = fread(fid,Inf,'*uint8');
+    fclose(fid);
 
-%Get APIToken
-APIToken = rino.authentication;
+    % Set filename struct - Set file name if newname given, leave as original name if no name
+    %given
+    if sum(size(input.newname)) > 0
+        namestruct = struct('name', input.newname);
+    else
+        namestruct = struct('name', fname);
+    end
+    
+    %Set tags struct
+    if sum(size(input.tags)) > 0
+        tagsstruct = struct('tags',char(input.tags));
+    else
+        tagsstruct = struct();
+    end
+    
+    %Set metadata struct
+    if sum(size(input.metadata)) > 0
+        metadata = input.metadata;
+    else
+        metadata = struct();
+    end
+    
+    %set parent struct
+    if sum(size(input.parent)) > 0
+        parentstruct = struct('parent',input.parent);
+    else
+        parentstruct = struct();
+    end
+    
+    %Get APIToken
+    APIToken = rino.authentication;
+    
+    %JSONify metadata and tags
+    metadatajson = rino.savejson('', rino.catstruct(metadata, tagsstruct, namestruct, parentstruct), struct('Compact', 1));
+        
+    %Set http request headers
+    headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json'), rino.http_createHeader('rinocloud-api-payload', metadatajson)];
 
-
-
-
+    %Make http request
+    response = rino.urlread2(strcat(rino.api,'/files/upload_binary/'),'POST', binary_data, headers);
+    
+    try
+        response_struct = rino.loadjson(response);
+    catch
+        response_struct = response;
+    end
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Input verification functions
     function TF = checkmetadata(x)
@@ -59,12 +103,12 @@ APIToken = rino.authentication;
         end
     end
 
-    function TF = check01(x)
+    function TF = checktags(x)
         TF = false;
-        if x==0 || x==1
+        if  (iscell(x) && (sum(cellfun(@ischar,x))==length(x)))
             TF = true;
         else
-            error('This parameter should be set to 0 for false or 1 for true');
+            error('The tags should be input as strings in a cell array.');
         end
     end
 
