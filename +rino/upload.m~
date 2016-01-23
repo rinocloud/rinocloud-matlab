@@ -45,12 +45,7 @@ APIToken = rino.authentication;
 
     function TF = checkparent(x)
         TF = false;
-        if isstr(x) || isnumeric(x)
-            if isstr(x)
-               if length(str2num(x))<1
-                   error('Parent must be specified by its object ID - the object ID is a number, not a file name.')
-               end
-            end
+        if (isstr(x) || isnumeric(x))
             TF = true;
         else
             error('Parent should be specified and the object ID of the parent folder. This can be specified as a string or a number.');
