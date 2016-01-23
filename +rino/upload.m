@@ -7,6 +7,8 @@ p = inputParser;
 addParamValue(p,'metadata','',@checkmetadata);
 addParamValue(p,'newname','',@checknewname);
 addParamValue(p,'parent','',@checkparent);
+addOptional(p,'loadbinary',false, @check01)
+addOptional(p,'casttotext',false, @check01)
 p.parse(varargin{:});
 output=p.Results;
 
@@ -54,6 +56,15 @@ APIToken = rino.authentication;
             TF = true;
         else
             error('Parent should be specified and the object ID of the parent folder. This can be specified as a string or a number.');
+        end
+    end
+
+    function TF = check01(x)
+        TF = false;
+        if x==0 || x==1
+            TF = true;
+        else
+            error('This parameter should be set to 0 for false or 1 for true');
         end
     end
 
