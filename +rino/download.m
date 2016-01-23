@@ -1,5 +1,6 @@
 function [ output ] = download(ID, varargin)
-%UNTITLED5 Summary of this function goes here
+% download -  downloads the file specifed by the object id to the current
+% working directory
 %   Detailed explanation goes here
     
     checkID(ID);

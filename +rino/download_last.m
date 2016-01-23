@@ -1,7 +1,15 @@
-function [ output ] = download(ID, varargin)
-% download -  downloads the 
+function [ output ] = download_last(varargin)
+% download -  downloads the file specifed by the object id to the current
+% working directory
 %   Detailed explanation goes here
     
+    %get and check ID
+    APIToken = rino.authentication;
+    headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
+    metadata = rino.urlread2(strcat(rino.api,'/files/search/'),'POST', rino.savejson('', struct('query', '*','limit',1)), headers);
+    splitmeta = regexp(metadata, '"id":', 'split');
+    splitmeta2 = regexp(splitmeta{2}, ',"', 'split');
+    ID=splitmeta2{1};
     checkID(ID);
 
     %Parse input
@@ -37,8 +45,6 @@ function [ output ] = download(ID, varargin)
     end
     
    
-    %Get APIToken
-    APIToken = rino.authentication;
     % create http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
 
