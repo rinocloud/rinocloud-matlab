@@ -104,7 +104,7 @@ You can get the ID of the uploaded file by typing
 response_metadata.id
 ```
 
-### Full example
+### Full upload example
 
 Here is an example that uses all of the optional arguments. Here we want to upload a file called "logo.png", but we want to rename it to "RinoLogo.png". We also want to tag it with the tags "image" and "logo", and to give it the key value pairs "size : small" and "colour : purple". Finally, we also want to save it within a folder we have created which has the object ID 865. In order to do this, we enter the following:
 
@@ -116,7 +116,6 @@ FOLDER_ID = 865;
 
 rino.upload(logo.png, 'newname', 'RinoLogo.png', 'tags', SEARCH_TAGS, 'metadata', FILE_METADATA, 'parent', FOLDER_ID);
 ```
-
 
 ## Downloading files
 
@@ -170,7 +169,9 @@ The create_folder() function take only a single argument, the folder name as a s
 
 To create a folder called "rino_uploads", we enter:
 
-## Updating tags
+## Updating
+
+### Updating tags
 
 ```
 rino.update_tags()
@@ -182,7 +183,7 @@ This function removes the old tags associated with an object and replaces them w
 rino.update_tags(8898,{'fast', 'new'});
 ```
 
-## Updating metadata
+### Updating metadata
 
 This updates the metadata associated with a file. The function requires the object ID of the file and the new metadata as a MATLAB structure array. For example, if we wanted to associate the metadata "laser_power : 6 nW" with the file with the ID 8898, we would enter:
 
@@ -190,7 +191,7 @@ This updates the metadata associated with a file. The function requires the obje
 rino.update_metadata(8898, struct('laser_power', '6 nW'));
 ```
 
-## Deleting files
+## Deleting
 
 This function deletes a saved file. The delete function takes only the object ID of the file you want to delete. So delete the file with the object ID 8898, we type:
 
