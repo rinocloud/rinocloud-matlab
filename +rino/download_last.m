@@ -20,7 +20,9 @@ function [ output ] = download_last(number ,varargin)
     p.parse(varargin{:});
     input=p.Results;
     
-    
+    if input.totext == true
+        input.tofile = false;
+    end
     
     
     %Get token

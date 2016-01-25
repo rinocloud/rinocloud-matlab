@@ -13,9 +13,7 @@ function [ output ] = download(ID, varargin)
     p.parse(varargin{:});
     input=p.Results;
     
-    if input.totext == true
-        input.tofile = false;
-    end
+    if 
     
     % Set filename - Set file name if newname given, leave as original name if no name given
     if sum(size(input.newname)) > 0
