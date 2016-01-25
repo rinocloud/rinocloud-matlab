@@ -214,8 +214,11 @@ rino.upload(filename, 'newname', newname, 'metadata', metadata, 'tags', tags, 'p
 The upload function only requires the file name (or file path) as a string as an input. It also takes the following optional arguments:
 
 __newname__: This is the name that the file will given when it is saved to Rinocloud. The newname should be a string.
+
 __tags__: Tags are to allow you to search your data more easily. Tags should be given as a cell array of strings.
+
 __metadata__: Metadata should be in the form of key-value pairs and should be passed to the upload function as a MATLAB structure array.
+
 __parent__: The parent argument is the object ID of the folder that you want to save your file into. You can find the folder object ID using the web interface.
 
 ## rino.download()
@@ -230,5 +233,7 @@ rino.download(file_id, 'tofile', 1, 'totext', 0)
 The download function only requires the object ID of file you want to download. The funtion will save the file in your current folder. The download function also takes the following optional arguments:
 
 __newname__: As before, this is the name that the file will given when it is saved to your computer. The newname should be a string.
+
 __tofile__: This argument defaults to true, but if it is set to false, the downloaded file will be returned as binary data (encoded in the uint8 format) and will not be saved to a file on your computer.
+
 __totext__: This argument defaults to false, but if set to true it will assume that the downloaded data is text.
