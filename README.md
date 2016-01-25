@@ -8,7 +8,7 @@ Download the zip file from
 
 [https://github.com/rinocloud/rinocloud-matlab/archive/master.zip](https://github.com/rinocloud/rinocloud-matlab/archive/master.zip)
 
-Or you can git clone the this repository.
+Or you can git clone the repository.
 
 ```
 git clone https://github.com/rinocloud/rinocloud-matlab
