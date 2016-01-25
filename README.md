@@ -121,6 +121,8 @@ rino.upload(logo.png, 'newname', 'RinoLogo.png', 'tags', SEARCH_TAGS, 'metadata'
 
 ### Download a single Rinocloud file
 
+You can specify which file you want to download by giving its object ID. This can be found using the Rinocloud web interface. To download an object with the ID 667, you would enter:
+
 ```
 rino.download(667);
 ```
@@ -151,10 +153,10 @@ The download the most recently uploaded file to your current folder, you can ent
 rino.download_last();
 ```
 
-Alternatively, you can specify which file you want to download by giving its object ID. This can be found using the Rinocloud web interface. To download an object with the ID 667, you would enter:
+or 
 
 ```
-rino.download_last(4);
+rino.download_last(4); % will download last 4 files
 ```
 
 The function also takes the "tofile" and "totext" arguments in the same way as the rino.download() function. For multiple files, the output will be given as a cell array if the "tofile" argument is set to false.
