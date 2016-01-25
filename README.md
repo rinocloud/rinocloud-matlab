@@ -1,27 +1,44 @@
 # The Rinocloud-MATLAB Integration
 
-You can save and load data files from Rinocloud from within MATLAB using the Rinocloud-MATLAB interface. To get started, download the Rinocloud Matlab Integration from [github](https://github.com/rinocloud/rinocloud-matlab).
+You can save and load data files from Rinocloud from within MATLAB using the Rinocloud-MATLAB interface.
 
-## Setting up the Rinocloud-MATLAB Interface
+## Installation
 
-After you have signed in to Rinocloud and downloaded the Rinocloud-MATLAB interface folder, add the folder and subfolders to the MATLAB path.
+Download the zip file from 
 
-Once you have done this, get your API Token [here](www.LinkGoesHere.com). Copy your API token and paste it into the function called "authenication.m", which is found in the "+rino" folder. Remember to keep this token secret, anyone with access to the API token can see and modify your data.
+[https://github.com/rinocloud/rinocloud-matlab/archive/master.zip](https://github.com/rinocloud/rinocloud-matlab/archive/master.zip)
+
+Or you can git clone the this repository.
+
+```
+git clone https://github.com/rinocloud/rinocloud-matlab
+```
+
+## Getting started
+
+To get your API token; sign into your Rinocloud project and go to 
+
+```
+https://<yourproject>.rinocloud.com/integrations/
+``` 
+
+Download the Rinocloud-MATLAB integration folder and add the folder and subfolders to your MATLAB path.
+
+Copy your API token and paste it into the function called "authenication.m", which is found in the "+rino" folder. Remember to keep this token secret, anyone with access to the API token can see and modify your data.
 
 **That's it!** You're all set up and ready to go. See below for guides to using the different functions in the Rinocloud-MATLAB Interface.
 
-# Tests
+## Tests
 
-The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the API Token in the authenication.m file to the test API Token, which is:
-```
-a377055b6aecc41f00038c4cd48169b6b55b3d78
-```
+The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the test API Token in the authenication.m file to the test API Token, which is:
+
+__test only token__ = `a377055b6aecc41f00038c4cd48169b6b55b3d78`
+
 Once you have done this, running rinotests.m will check that all the Matlab functions for Rinocloud work on your computer and on your version of Matlab.
 
-Remember to change the API Token back after you have finished running the tests.
+Remember to change the API Token back after you have finished running the tests, as all the test data is deleted periodically.
 
-
-# Easy Examples
+# Examples
 
 This section will give you some simple example of how to use the Rinocloud-MATLAB Integration. For full details on what the functions can do, see the Function Documentation section below.
 
@@ -30,10 +47,52 @@ This section will give you some simple example of how to use the Rinocloud-MATLA
 To upload a file to Rinocloud from MATLAB, first make sure that the file is in your current folder. To upload the file "logo.png" to Rinocloud, in the command window enter:
 
 ```
-rino.upload('logo.png');
+response_metadata = rino.upload('logo.png');
 ```
 
-The file has now ben uploaded to Rinocloud.
+## Upload a file with metadata and tags
+
+```
+metadata = struct(
+            'param1', 'value1'
+            'param2', 'value2'
+          )
+          
+
+tags = {'apples','oranges'}
+
+response_metadata = rino.upload('logo.png', 'metadata', metadata, 'tags', tags);
+```
+
+## Upload to a specific folder
+
+Just get the id of the folder next to the folder name on the rinocloud website, its displayed as #<id>
+
+```
+response_metadata = rino.upload('logo.png', 'parent', <parent_id>);
+```
+
+## Response metadata
+
+The response metadata will typically look like this:
+
+```
+response_metadata = 
+              id: 848
+            name: 'logo.png'
+            size: 11433
+            type: 'file'
+         project: 1
+    project_name: 'test'
+           owner: 'test_user'
+      created_on: '2016-01-25T11:33:44.098427Z'
+      updated_on: '2016-01-25T11:33:44.098457Z'
+          shared: 0
+          parent: []
+            tags: {'apples'  'oranges'}
+           notes: []
+          param1: 'value1'
+```
 
 ## Downloading a file
 The download the most recently uploaded file to your current folder, you can enter:
@@ -64,7 +123,7 @@ Tags are to allow you to search your data more easily. Tags should be given as a
 
 ### metadata
 
-Metadata should bee in the form of key-value pairs and should be passed to the upload function as a MATLAB structure array.
+Metadata should be in the form of key-value pairs and should be passed to the upload function as a MATLAB structure array.
 
 ### parent
 
