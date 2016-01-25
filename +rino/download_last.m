@@ -44,18 +44,20 @@ function [ output ] = download_last(number ,varargin)
 
 
         %Check to see if file exists
-        basefname=fname;
-        for tt=1:1000
-            if exist(fname, 'file') == 2
-               filebits=regexp(basefname, '\.', 'split');
-               file=char(filebits(1:end-1));
-               ext=char(filebits(end));
-               fname=char(strcat(file,'(', num2str(tt),').', ext));
-            else
-                break
-            end
-            if tt == 1000
-                error('You have 1000 files with this name in this directory - please choose a different filename.')
+        if exist(fname, 'file') == 2
+            basefname=fname;
+            for tt=1:1000
+                if exist(fname, 'file') == 2
+                   filebits=regexp(basefname, '\.', 'split');
+                   file=char(filebits(1:end-1));
+                   ext=char(filebits(end));
+                   fname=char(strcat(file,'(', num2str(tt),').', ext));
+                else
+                    break
+                end
+                if tt == 1000
+                    error('You have 1000 files with this name in this directory - please choose a different filename.')
+                end
             end
         end
 
@@ -73,7 +75,7 @@ function [ output ] = download_last(number ,varargin)
             fdl = fopen(fname,'wb');
             fwrite(fdl, downloadeddata);
             fclose(fdl);
-            output=sprintf('Downloaded data saved.');
+            output{mm}=setfield(metadata, 'name', fname);
         else
             output{mm} = downloadeddata;
         end

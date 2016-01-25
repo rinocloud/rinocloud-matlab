@@ -7,12 +7,16 @@ function [ output_args ] = authentication( APIToken )
             error('API Token must be given as a string.')
         end
         APITokenOut=APIToken;
+        disp(sprintf ( '\nAPI Token set.') )       
     end
     
+    if nargin == 0
+    
     if length(APITokenOut) == 0
-        error('Please set your API Token')
+        error('Please set your API Token.')
     end
 
     output_args = ['Token ' ,APITokenOut];
+    end
 end
 
