@@ -4,9 +4,7 @@ function [ output ] = download_last(number ,varargin)
 %   Detailed explanation goes here
 
     %if only key-value pairs included, download most recent.
-    if mod(nargin,2)==0
-        number=1;
-    end
+
 
     checknumber(number);
 
@@ -15,11 +13,16 @@ function [ output ] = download_last(number ,varargin)
     
     %Parse input
     p = inputParser;
-    addOptional(p, 'tofile', true, @check01)
     addOptional(p, 'totext', false, @check01)
+    addOptional(p, 'tofile', true, @check01)
+    addParamValue(p,'format','',@checkformat)
     p.parse(varargin{:});
     input=p.Results;
     
+
+    if sum(size(input.format)) > 0
+        input.totext = true;
+    end
     if input.totext == true
         input.tofile = false;
     end
@@ -77,7 +80,11 @@ function [ output ] = download_last(number ,varargin)
             fclose(fdl);
             output{mm}=setfield(metadata, 'name', fname);
         else
+            if sum(size(input.format)) > 0
+            output{mm} = textscan(downloadeddata, input.format);
+            else
             output{mm} = downloadeddata;
+            end
         end
     end
     
@@ -134,6 +141,15 @@ function [ output ] = download_last(number ,varargin)
             error('The number of last files must be a number');
         end
         
+    end
+
+    function TF = checkformat(x)
+        TF = false;
+        if ischar(x)
+            TF = true;
+        else
+            error('Specify the format as a string.');
+        end
     end
 
 end

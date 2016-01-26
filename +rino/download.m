@@ -10,9 +10,14 @@ function [ output ] = download(ID, varargin)
     addOptional(p, 'tofile', true, @check01)
     addOptional(p, 'totext', false, @check01)
     addParamValue(p,'newname','',@checknewname);
+    addParamValue(p,'format','',@checkformat);
+    
     p.parse(varargin{:});
     input=p.Results;
     
+    if sum(size(input.format)) > 0
+        input.totext = true;
+    end
     if input.totext == true
         input.tofile = false;
     end
@@ -62,7 +67,11 @@ function [ output ] = download(ID, varargin)
         fclose(fdl);
         output=setfield(metadata, 'name', fname);
     else
-        output = downloadeddata;
+        if sum(size(input.format)) > 0
+            output = textscan(downloadeddata, input.format);
+        else
+            output = downloadeddata;
+        end
     end
     
     
@@ -107,7 +116,16 @@ function [ output ] = download(ID, varargin)
         else
             error('The new file name (newname) should be passed to the download function as a string.');
         end
-       end
+    end
+   
+    function TF = checkformat(x)
+        TF = false;
+        if ischar(x)
+            TF = true;
+        else
+            error('Specify the format as a string.');
+        end
+    end
 
 end
 
