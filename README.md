@@ -24,17 +24,27 @@ https://<yourproject>.rinocloud.com/integrations/
 
 Download the Rinocloud-MATLAB integration folder and add the folder and subfolders to your MATLAB path.
 
-Copy your API token and paste it into the function called "authenication.m", which is found in the "+rino" folder. Remember to keep this token secret, anyone with access to the API token can see and modify your data.
+Enter your API Token as a string into the authentication function:
+```
+rino.authentication('<Your API Token>');
+```
+
+Remember to keep this token secret, anyone with access to the API token can see and modify your data.
 
 **That's it!** You're all set up and ready to go. See below for guides to using the different functions in the Rinocloud-MATLAB Interface.
 
 ## Tests
 
-The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the test API Token in the authenication.m file to the test API Token, which is:
+The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the test API Token using the rino.authenication function. The test token is:
 
 __test only token__ = `a377055b6aecc41f00038c4cd48169b6b55b3d78`
 
-Once you have done this, running rinotests.m will check that all the Matlab functions for Rinocloud work on your computer and on your version of Matlab.
+so enter:
+```
+rino.authentication('a377055b6aecc41f00038c4cd48169b6b55b3d78');
+```
+
+Once you have done this, running rinotests.m will check that the Matlab functions for Rinocloud work on your computer and on your version of Matlab.
 
 Remember to change the API Token back after you have finished running the tests, as all the test data is deleted periodically.
 
@@ -127,7 +137,7 @@ You can specify which file you want to download by giving its object ID. This ca
 rino.download(667);
 ```
 
-It will be named with the filename on Rinocloud
+It will be named with the filename on Rinocloud. The metadata of the object will be returned as a structure array.
 
 ### Download and rename
 
@@ -139,18 +149,31 @@ rino.download(7664, 'newname', 'spectrum.txt');
 
 ### Download into a variable
 
-If we simply wanted to read the text straight into a MATLAB variable, "DATA", as a string, we would type:
+If we simply wanted to read the text straight into a MATLAB variable, "DATA", we would type:
 
 ```
-DATA = rino.download(7664, 'tofile', false, 'totext', true);
+DATA = rino.download(7664, 'tofile', false);
 ```
+This saves the data in uint8 format. If we want the data to be read as text and saved to a variable, we enter:
+
+```
+DATA = rino.download(7664, 'totext', true);
+```
+
+Sometimes we will want the data to be parsed and read into a Matlab variable ready for plotting. If you specify the format of the data using a format string, the data will be read into a Matlab variable. For example:
+```
+DATA = rino.download(7664, 'format', '%f %f);
+```
+Would read a file containing two columns of floating point numbers separated by a space into a Matlab array.
+
+
 
 ### Download most recent
 
 The download the most recently uploaded file to your current folder, you can enter:
 
 ```
-rino.download_last();
+rino.download_last(1);
 ```
 
 or 
@@ -159,7 +182,7 @@ or
 rino.download_last(4); % will download last 4 files
 ```
 
-The function also takes the "tofile" and "totext" arguments in the same way as the rino.download() function. For multiple files, the output will be given as a cell array if the "tofile" argument is set to false.
+The function also takes the "tofile" and "totext" and 'format' arguments in the same way as the rino.download() function. For multiple files, the output will be given as a cell array if the "tofile" argument is set to false (this happens automatically if 'totext' is set to true or if a format string is given).
 
 ## Creating folders
 
@@ -229,7 +252,7 @@ __parent__: The parent argument is the object ID of the folder that you want to 
 rino.download(file_id)
 
 % with all optional arguments
-rino.download(file_id, 'tofile', 1, 'totext', 0)
+rino.download(file_id, 'tofile', true, 'totext', false, 'format', 'formatstring')
 ```
 
 The download function only requires the object ID of file you want to download. The funtion will save the file in your current folder. The download function also takes the following optional arguments:
@@ -239,3 +262,5 @@ __newname__: As before, this is the name that the file will given when it is sav
 __tofile__: This argument defaults to true, but if it is set to false, the downloaded file will be returned as binary data (encoded in the uint8 format) and will not be saved to a file on your computer.
 
 __totext__: This argument defaults to false, but if set to true it will assume that the downloaded data is text.
+
+__format__: This argument should be specified if you want matlab to read a text file into an array. You can find out about setting format strings [here](http://uk.mathworks.com/help/matlab/ref/textscan.html).
