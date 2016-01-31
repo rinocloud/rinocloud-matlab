@@ -67,7 +67,7 @@ end
 
 disp(sprintf ( '\nTesting upload with metadata...') );
 returned_meta=rino.upload('logo.png','metadata',struct('testfield1','testvalue1'));
-if strcmp(returned_meta.testfield1, 'testvalue1')==1
+if strcmp(returned_meta.metadata.testfield1, 'testvalue1')==1
     disp(sprintf('\tTest passed'));
 else
     warning('Upload with metadata failed')
@@ -77,7 +77,7 @@ end
 %Test update metadata
 disp(sprintf ( '\nTesting update metadata...') );
 returned_meta=rino.update_metadata(logoID, struct('updated','metatest'));
-if strcmp(returned_meta.updated, 'metatest')==1
+if strcmp(returned_meta.metadata.updated, 'metatest')==1
     disp(sprintf('\tTest passed'));
 else
     warning('Update metadata failed')
@@ -113,6 +113,16 @@ if strcmp(class(FileContent),'uint8') && length(FileContent)==11433
     disp(sprintf('\tTest passed'));
 else
     warning('download test failed')
+    Worked=false;
+end
+
+%test delete
+disp(sprintf ( '\nTesting delete...') );
+Response=rino.delete(logoID);
+if strcmp(Response, 'Object deleted')
+    disp(sprintf('\tTest passed'));
+else
+    warning('delete test failed')
     Worked=false;
 end
 
