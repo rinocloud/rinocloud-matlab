@@ -68,7 +68,7 @@ function [ response_struct ] = upload(fname, varargin)
         try
         response_struct = response;
         catch
-            warning('An error occured and your computer did not recieve a response from Rinocloud.');
+            warning('An error occured and your computer did not recieve a response Rinocloud.');
         end
     end
     

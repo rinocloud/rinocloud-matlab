@@ -117,206 +117,208 @@ function [output,extras] = urlread2(urlChar,method,body,headersIn,varargin)
 %   Based on original urlread code by Matthew J. Simoneau
 %
 %   VERSION = 1.1
-
-in.CAST_OUTPUT      = true;
-in.FOLLOW_REDIRECTS = true;
-in.READ_TIMEOUT     = 0;
-in.ENCODING         = '';
-
-%Input handling
-%---------------------------------------
-if ~isempty(varargin)
-    for i = 1:2:numel(varargin)
-        prop  = upper(varargin{i});
-        value = varargin{i+1};
-        if isfield(in,prop)
-            in.(prop) = value;
-        else
-           error('Unrecognized input to function: %s',prop) 
-        end
-    end
-end
-
-if ~exist('method','var') || isempty(method), method = 'GET'; end
-if ~exist('body','var'), body = ''; end
-if ~exist('headersIn','var'), headersIn = []; end
-
-assert(usejava('jvm'),'Function requires Java')
-
-import com.mathworks.mlwidgets.io.InterruptibleStreamCopier;
-com.mathworks.mlwidgets.html.HTMLPrefs.setProxySettings %Proxy settings need to be set
-
-%Create a urlConnection.
-%-----------------------------------
-urlConnection = getURLConnection(urlChar);
-%For HTTP uses sun.net.www.protocol.http.HttpURLConnection
-%Might use ice.net.HttpURLConnection but this has more overhead
-
-%SETTING PROPERTIES
-%-------------------------------------------------------
-urlConnection.setRequestMethod(upper(method));
-urlConnection.setFollowRedirects(in.FOLLOW_REDIRECTS);
-urlConnection.setReadTimeout(in.READ_TIMEOUT);
-
-for iHeader = 1:length(headersIn)
-    curHeader = headersIn(iHeader);
-    urlConnection.setRequestProperty(curHeader.name,curHeader.value);
-end
-
-if ~isempty(body)
-    %Ensure vector?
-    if size(body,1) > 1
-        if size(body,2) > 1
-            error('Input parameter to function: body, must be a vector')
-        else
-            body = body';
-        end
-    end
-
-    if ischar(body)
-        %NOTE: '' defaults to Matlab's default encoding scheme 
-        body = unicode2native(body,in.ENCODING);
-    elseif ~(strcmp(class(body),'uint8') || strcmp(class(body),'int8'))
-        error('Function input: body, should be of class char, uint8, or int8, detected: %s',class(body))
-    end
-    
-    urlConnection.setRequestProperty('Content-Length',int2str(length(body)));
-    urlConnection.setDoOutput(true);
-    outputStream = urlConnection.getOutputStream;
-    outputStream.write(body);
-    outputStream.close;
-else
-    urlConnection.setRequestProperty('Content-Length','0');
-end
-
-%==========================================================================
-%                   Read the data from the connection.
-%==========================================================================
-%This should be done first because it tells us if things are ok or not
-%NOTE: If there is an error, functions below using urlConnection, notably
-%getResponseCode, will fail as well
 try
-    inputStream = urlConnection.getInputStream;
-    isGood = true;
-catch ME
-    isGood = false; 
-%NOTE: HTTP error codes will throw an error here, we'll allow those for now
-%We might also get another error in which case the inputStream will be
-%undefined, those we will throw here
-    inputStream = urlConnection.getErrorStream;
-    
-    if isempty(inputStream)
-        msg = ME.message;
-        I = strfind(msg,char([13 10 9])); %see example by setting timeout to 1
-        %Should remove the barf of the stack, at ... at ... at ... etc
-        %Likely that this could be improved ... (generate link with full msg)
-        if ~isempty(I)
-            msg = msg(1:I(1)-1);
+    in.CAST_OUTPUT      = true;
+    in.FOLLOW_REDIRECTS = true;
+    in.READ_TIMEOUT     = 0;
+    in.ENCODING         = '';
+
+    %Input handling
+    %---------------------------------------
+    if ~isempty(varargin)
+        for i = 1:2:numel(varargin)
+            prop  = upper(varargin{i});
+            value = varargin{i+1};
+            if isfield(in,prop)
+                in.(prop) = value;
+            else
+               error('Unrecognized input to function: %s',prop) 
+            end
         end
-        fprintf(2,'Response stream is undefined\n below is a Java Error dump (truncated):\n');
-        error(msg)
     end
-end
 
-%POPULATING HEADERS
-%--------------------------------------------------------------------------
-allHeaders = struct;
-allHeaders.Response = {char(urlConnection.getHeaderField(0))};
-done = false;
-headerIndex = 0;
+    if ~exist('method','var') || isempty(method), method = 'GET'; end
+    if ~exist('body','var'), body = ''; end
+    if ~exist('headersIn','var'), headersIn = []; end
 
-while ~done
-    headerIndex = headerIndex + 1;
-    headerValue = char(urlConnection.getHeaderField(headerIndex));
-    if ~isempty(headerValue)
-        headerName = char(urlConnection.getHeaderFieldKey(headerIndex));
-        headerName = fixHeaderCasing(headerName); %NOT YET FINISHED
-        
-        %Important, for name safety all hyphens are replace with underscores
-        headerName(headerName == '-') = '_';
-        if isfield(allHeaders,headerName)
-            allHeaders.(headerName) = [allHeaders.(headerName) headerValue];
+    assert(usejava('jvm'),'Function requires Java')
+
+    import com.mathworks.mlwidgets.io.InterruptibleStreamCopier;
+    com.mathworks.mlwidgets.html.HTMLPrefs.setProxySettings %Proxy settings need to be set
+
+    %Create a urlConnection.
+    %-----------------------------------
+    urlConnection = getURLConnection(urlChar);
+    %For HTTP uses sun.net.www.protocol.http.HttpURLConnection
+    %Might use ice.net.HttpURLConnection but this has more overhead
+
+    %SETTING PROPERTIES
+    %-------------------------------------------------------
+    urlConnection.setRequestMethod(upper(method));
+    urlConnection.setFollowRedirects(in.FOLLOW_REDIRECTS);
+    urlConnection.setReadTimeout(in.READ_TIMEOUT);
+
+    for iHeader = 1:length(headersIn)
+        curHeader = headersIn(iHeader);
+        urlConnection.setRequestProperty(curHeader.name,curHeader.value);
+    end
+
+    if ~isempty(body)
+        %Ensure vector?
+        if size(body,1) > 1
+            if size(body,2) > 1
+                error('Input parameter to function: body, must be a vector')
+            else
+                body = body';
+            end
+        end
+
+        if ischar(body)
+            %NOTE: '' defaults to Matlab's default encoding scheme 
+            body = unicode2native(body,in.ENCODING);
+        elseif ~(strcmp(class(body),'uint8') || strcmp(class(body),'int8'))
+            error('Function input: body, should be of class char, uint8, or int8, detected: %s',class(body))
+        end
+
+        urlConnection.setRequestProperty('Content-Length',int2str(length(body)));
+        urlConnection.setDoOutput(true);
+        outputStream = urlConnection.getOutputStream;
+        outputStream.write(body);
+        outputStream.close;
+    else
+        urlConnection.setRequestProperty('Content-Length','0');
+    end
+
+    %==========================================================================
+    %                   Read the data from the connection.
+    %==========================================================================
+    %This should be done first because it tells us if things are ok or not
+    %NOTE: If there is an error, functions below using urlConnection, notably
+    %getResponseCode, will fail as well
+    try
+        inputStream = urlConnection.getInputStream;
+        isGood = true;
+    catch ME
+        isGood = false; 
+    %NOTE: HTTP error codes will throw an error here, we'll allow those for now
+    %We might also get another error in which case the inputStream will be
+    %undefined, those we will throw here
+        inputStream = urlConnection.getErrorStream;
+
+        if isempty(inputStream)
+            msg = ME.message;
+            I = strfind(msg,char([13 10 9])); %see example by setting timeout to 1
+            %Should remove the barf of the stack, at ... at ... at ... etc
+            %Likely that this could be improved ... (generate link with full msg)
+            if ~isempty(I)
+                msg = msg(1:I(1)-1);
+            end
+            fprintf(2,'Response stream is undefined\n below is a Java Error dump (truncated):\n');
+            error(msg)
+        end
+    end
+
+    %POPULATING HEADERS
+    %--------------------------------------------------------------------------
+    allHeaders = struct;
+    allHeaders.Response = {char(urlConnection.getHeaderField(0))};
+    done = false;
+    headerIndex = 0;
+
+    while ~done
+        headerIndex = headerIndex + 1;
+        headerValue = char(urlConnection.getHeaderField(headerIndex));
+        if ~isempty(headerValue)
+            headerName = char(urlConnection.getHeaderFieldKey(headerIndex));
+            headerName = fixHeaderCasing(headerName); %NOT YET FINISHED
+
+            %Important, for name safety all hyphens are replace with underscores
+            headerName(headerName == '-') = '_';
+            if isfield(allHeaders,headerName)
+                allHeaders.(headerName) = [allHeaders.(headerName) headerValue];
+            else
+                allHeaders.(headerName) = {headerValue}; 
+            end
         else
-            allHeaders.(headerName) = {headerValue}; 
+            done = true;
+        end
+    end
+
+    firstHeaders = struct;
+    fn = fieldnames(allHeaders);
+    for iHeader = 1:length(fn)
+       curField = fn{iHeader};
+       firstHeaders.(curField) = allHeaders.(curField){1};
+    end
+
+    status = struct(...
+        'value',    urlConnection.getResponseCode(),...
+        'msg',      char(urlConnection.getResponseMessage));
+
+    %PROCESSING OF OUTPUT
+    %----------------------------------------------------------
+    byteArrayOutputStream = java.io.ByteArrayOutputStream;
+    % This StreamCopier is unsupported and may change at any time. OH GREAT :/
+    isc = InterruptibleStreamCopier.getInterruptibleStreamCopier;
+    isc.copyStream(inputStream,byteArrayOutputStream);
+    inputStream.close;
+    byteArrayOutputStream.close;     
+
+    if in.CAST_OUTPUT
+        charset = '';
+
+        %Extraction of character set from Content-Type header if possible
+        if isfield(firstHeaders,'Content_Type')
+            text = firstHeaders.Content_Type;
+            %Always open to regexp improvements
+            charset = regexp(text,'(?<=charset=)[^\s]*','match','once');
+        end
+
+        if ~isempty(charset)
+            output = native2unicode(typecast(byteArrayOutputStream.toByteArray','uint8'),charset);
+        else
+            output = char(typecast(byteArrayOutputStream.toByteArray','uint8'));
         end
     else
-        done = true;
-    end
-end
-
-firstHeaders = struct;
-fn = fieldnames(allHeaders);
-for iHeader = 1:length(fn)
-   curField = fn{iHeader};
-   firstHeaders.(curField) = allHeaders.(curField){1};
-end
-
-status = struct(...
-    'value',    urlConnection.getResponseCode(),...
-    'msg',      char(urlConnection.getResponseMessage));
-
-%PROCESSING OF OUTPUT
-%----------------------------------------------------------
-byteArrayOutputStream = java.io.ByteArrayOutputStream;
-% This StreamCopier is unsupported and may change at any time. OH GREAT :/
-isc = InterruptibleStreamCopier.getInterruptibleStreamCopier;
-isc.copyStream(inputStream,byteArrayOutputStream);
-inputStream.close;
-byteArrayOutputStream.close;     
-
-if in.CAST_OUTPUT
-    charset = '';
-    
-    %Extraction of character set from Content-Type header if possible
-    if isfield(firstHeaders,'Content_Type')
-        text = firstHeaders.Content_Type;
-        %Always open to regexp improvements
-        charset = regexp(text,'(?<=charset=)[^\s]*','match','once');
+        %uint8 is more useful for later charecter conversions
+        %uint8 or int8 is somewhat arbitary at this point
+        output = typecast(byteArrayOutputStream.toByteArray','uint8');
     end
 
-    if ~isempty(charset)
-        output = native2unicode(typecast(byteArrayOutputStream.toByteArray','uint8'),charset);
-    else
-        output = char(typecast(byteArrayOutputStream.toByteArray','uint8'));
+    extras              = struct;
+    extras.allHeaders   = allHeaders;
+    extras.firstHeaders = firstHeaders;
+    extras.status       = status;
+    %Gets eventual url even with redirection
+    extras.url          = char(urlConnection.getURL);
+    extras.isGood       = isGood;
+catch
+    warning('An error occured and your computer did not connect to Rinocloud');
+end
+
+
     end
-else
-    %uint8 is more useful for later charecter conversions
-    %uint8 or int8 is somewhat arbitary at this point
-    output = typecast(byteArrayOutputStream.toByteArray','uint8');
-end
 
-extras              = struct;
-extras.allHeaders   = allHeaders;
-extras.firstHeaders = firstHeaders;
-extras.status       = status;
-%Gets eventual url even with redirection
-extras.url          = char(urlConnection.getURL);
-extras.isGood       = isGood;
+    function headerNameOut = fixHeaderCasing(headerName)
+    %fixHeaderCasing Forces standard casing of headers
+    %
+    %   headerNameOut = fixHeaderCasing(headerName)
+    %   
+    %   This is important for field access in a structure which
+    %   is case sensitive
+    %
+    %   Not yet finished. 
+    %   I've been adding to this function as problems come along
 
-
-
-end
-
-function headerNameOut = fixHeaderCasing(headerName)
-%fixHeaderCasing Forces standard casing of headers
-%
-%   headerNameOut = fixHeaderCasing(headerName)
-%   
-%   This is important for field access in a structure which
-%   is case sensitive
-%
-%   Not yet finished. 
-%   I've been adding to this function as problems come along
-    
-    switch lower(headerName)
-        case 'location'
-            headerNameOut = 'Location';
-        case 'content_type'
-            headerNameOut = 'Content_Type';
-        otherwise
-            headerNameOut = headerName;
+        switch lower(headerName)
+            case 'location'
+                headerNameOut = 'Location';
+            case 'content_type'
+                headerNameOut = 'Content_Type';
+            otherwise
+                headerNameOut = headerName;
+        end
     end
-end
 
 %==========================================================================
 %==========================================================================
