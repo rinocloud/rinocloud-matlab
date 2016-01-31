@@ -2,7 +2,7 @@
 
 You can save and load data files from Rinocloud from within MATLAB using the Rinocloud-MATLAB interface.
 
-## Installation
+## Getting the Rinocloud-MATLAB Integration
 
 Download the zip file from 
 
@@ -15,38 +15,25 @@ git clone https://github.com/rinocloud/rinocloud-matlab
 ```
 
 ## Getting started
+First, add the Rinocloud-MATLAB integration folder to your MATLAB path (find it in the MATLAB file explorer, right-click on the folder and select "Add to Path -> Selected Folders and Subfolders").
 
-To get your API token; sign into your Rinocloud project and go to 
+Second, get your API token; sign into your Rinocloud project and go to 
 
 ```
 https://<yourproject>.rinocloud.com/integrations/
 ``` 
 
-Download the Rinocloud-MATLAB integration folder and add the folder and subfolders to your MATLAB path.
 
-Enter your API Token as a string into the authentication function:
+Enter your API Token as a string into the authentication function (remember to include quote marks to make the input a string):
 ```
 rino.authentication('<Your API Token>');
 ```
 
-Remember to keep this token secret, anyone with access to the API token can see and modify your data.
+You should keep this token secret, anyone with access to the API token can see and modify your data.
 
 **That's it!** You're all set up and ready to go. See below for guides to using the different functions in the Rinocloud-MATLAB Interface.
 
-## Tests
 
-The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the test API Token using the rino.authenication function. The test token is:
-
-__test only token__ = `a377055b6aecc41f00038c4cd48169b6b55b3d78`
-
-so enter:
-```
-rino.authentication('a377055b6aecc41f00038c4cd48169b6b55b3d78');
-```
-
-Once you have done this, running rinotests.m will check that the Matlab functions for Rinocloud work on your computer and on your version of Matlab.
-
-Remember to change the API Token back after you have finished running the tests, as all the test data is deleted periodically.
 
 # Examples
 
@@ -65,13 +52,9 @@ response_metadata = rino.upload('logo.png');
 ### Upload a file with metadata and tags
 
 ```
-metadata = struct(
-            'param1', 'value1'
-            'param2', 'value2'
-          )
-          
+metadata = struct('param1', 'value1', 'param2', 'value2');
 
-tags = {'apples','oranges'}
+tags = {'apples','oranges'};
 
 response_metadata = rino.upload('logo.png', 'metadata', metadata, 'tags', tags);
 ```
@@ -90,20 +73,20 @@ The response metadata will typically look like this:
 
 ```
 response_metadata = 
-              id: 848
+            id: 848
+            metadata: [1x1 struct]
             name: 'logo.png'
             size: 11433
             type: 'file'
-         project: 1
-    project_name: 'test'
-           owner: 'test_user'
-      created_on: '2016-01-25T11:33:44.098427Z'
-      updated_on: '2016-01-25T11:33:44.098457Z'
-          shared: 0
-          parent: 1
+            project: 1
+            project_name: 'test'
+            owner: 'test_user'
+            created_on: '2016-01-25T11:33:44.098427Z'
+            updated_on: '2016-01-25T11:33:44.098457Z'
+            shared: 0
+            parent: 1
             tags: {'apples'  'oranges'}
-          param1: 'value1'
-          param2: 'value2'
+
 ```
 
 ### Getting the id of the uploaded file
@@ -190,7 +173,7 @@ The function also takes the "tofile" and "totext" and 'format' arguments in the 
 rino.create_folder('rino_uploads');
 ```
 
-The create_folder() function take only a single argument, the folder name as a string. The function returns the folder metadata, including its object ID so that the ID can be used when uploading to the folder.
+The create_folder() function takes a single argument, the folder name as a string. The function returns the folder metadata, including its object ID so that the ID can be used when uploading to the folder.
 
 To create a folder called "rino_uploads", we enter:
 
@@ -202,7 +185,7 @@ To create a folder called "rino_uploads", we enter:
 rino.update_tags()
 ```
 
-This function removes the old tags associated with an object and replaces them with new ones. The function requires the object ID of the object with tags to be replaced and the new tags as cell array of strings. For example, to replace the tags of the object with the ID 8898 with the tags "fast" and "new", we would type:
+This function removes the old tags associated with an object and replaces them with new ones. The function requires the object ID of the object with tags to be replaced and the new tags as a cell array of strings. For example, to replace the tags of the object with the ID 8898 with the tags "fast" and "new", we would type:
 
 ```
 rino.update_tags(8898,{'fast', 'new'});
@@ -264,3 +247,18 @@ __tofile__: This argument defaults to true, but if it is set to false, the downl
 __totext__: This argument defaults to false, but if set to true it will assume that the downloaded data is text.
 
 __format__: This argument should be specified if you want matlab to read a text file into an array. You can find out about setting format strings [here](http://uk.mathworks.com/help/matlab/ref/textscan.html).
+
+# Tests
+
+The Rinocloud-MATLAB integration should work right away, but if you want to test all of the functions automatically, you can do this by running the rinotests.m function. You will need to set the test API Token using the rino.authenication function. The test token is:
+
+__test only token__ = `a377055b6aecc41f00038c4cd48169b6b55b3d78`
+
+so enter:
+```
+rino.authentication('a377055b6aecc41f00038c4cd48169b6b55b3d78');
+```
+
+Once you have done this, running rinotests.m will check that the Matlab functions for Rinocloud work on your computer and on your version of Matlab.
+
+Remember to change the API Token back after you have finished running the tests, as all the test data is deleted periodically.
