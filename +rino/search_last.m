@@ -4,13 +4,21 @@ function [ ids ] = search_last(number)
 
     APIToken = rino.authentication;
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
-    metadata = rino.urlread2(strcat(rino.api,'/files/search/'),'POST', rino.savejson('', struct('query', '*','limit',number)), headers);
-    structure=rino.loadjson(metadata);
-    result=structure.result;
+    try
+        metadata = rino.urlread2(strcat(rino.api,'/files/search/'),'POST', rino.savejson('', struct('query', '*','limit',number)), headers);
+        structure=rino.loadjson(metadata);
+        result=structure.result;
+    catch
+        warning('An error occured and your computer did not connect to Rinocloud.');
+    end
     
     ids={};
-    for tt=1:length(result)
-        ids{tt}=result{tt}.id;
+    try
+        for tt=1:length(result)
+            ids{tt}=result{tt}.id;
+        end
+    catch
+        warning('An error occured.');
     end
 end
 

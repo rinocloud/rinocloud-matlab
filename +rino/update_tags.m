@@ -16,12 +16,22 @@ function [ response_struct ] = update_tags( ID, tags )
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
 
     %Make post request
-    response = rino.urlread2(strcat(rino.api,'/files/update_metadata/'),'POST',metadatajson, headers);
-    
+    try
+        response = rino.urlread2(strcat(rino.api,'/files/update_metadata/'),'POST',metadatajson, headers);
+    catch
+        warning('An error occured and your computer did not connect to Rinocloud.');
+    end
+        
+        
     try
         response_struct = rino.loadjson(response);
     catch
+        try
         response_struct = response;
+        catch
+            warning('An error occured and your computer did not recieve a response from Rinocloud.');
+            response_struct='error';
+        end
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

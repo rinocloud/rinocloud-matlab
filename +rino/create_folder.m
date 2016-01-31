@@ -9,7 +9,7 @@ function [ response_struct ] = create_folder( folder_name )
     
     %create http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
-
+try
     response = rino.urlread2(strcat(rino.api,'/files/create_folder/'),'POST',savejson('', struct('name',folder_name)), headers);
     
     try
@@ -17,6 +17,10 @@ function [ response_struct ] = create_folder( folder_name )
     catch
         response_struct = response;
     end
+catch
+     warning('An error occured.');
+     response_struct='error.';
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Input verification functions
     function TF = checkfoldername(x)

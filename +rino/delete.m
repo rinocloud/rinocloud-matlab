@@ -5,7 +5,7 @@ function [ response_struct ] = delete(ID)
 
     %Get APIToken
     APIToken = rino.authentication;
-    
+    try
     %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
     response = rino.urlread2(strcat(rino.api,'/files/delete/'),'POST', rino.savejson('', struct('id', ID)), headers);
@@ -20,7 +20,10 @@ function [ response_struct ] = delete(ID)
             response_struct = response;
         end
     end
-    
+    catch
+         warning('An error occured.');
+         response_struct='error';
+    end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs
     function TF = checkID(x)

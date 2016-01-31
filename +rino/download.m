@@ -22,6 +22,7 @@ function [ output ] = download(ID, varargin)
         input.tofile = false;
     end
     
+    try
     % Set filename - Set file name if newname given, leave as original name if no name given
     metadata = rino.get_metadata(ID);
     if sum(size(input.newname)) > 0
@@ -74,7 +75,10 @@ function [ output ] = download(ID, varargin)
         end
     end
     
-    
+    catch
+         warning('An error occured.');
+         output = 'error.';
+    end
     
     
     

@@ -9,7 +9,11 @@ function [ output ] = download_last(number ,varargin)
     checknumber(number);
 
     %search
-    ids=rino.search_last(number);
+    try
+        ids=rino.search_last(number);
+    catch
+         warning('An error occured and your computer did not connect to Rinocloud.');
+    end
     
     %Parse input
     p = inputParser;
@@ -35,7 +39,7 @@ function [ output ] = download_last(number ,varargin)
     
     output={};
     %Loop to multi_download
-    
+    try
     for mm=1:length(ids)
         
         
@@ -92,7 +96,10 @@ function [ output ] = download_last(number ,varargin)
     if length(output)==1
         output=output{1};
     end
-    
+    catch
+         warning('An error occured.');
+         output='error.';
+    end
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs

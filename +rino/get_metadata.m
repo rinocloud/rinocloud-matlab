@@ -9,12 +9,21 @@ function [ response_struct ] = get_metadata(ID)
     
     %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
-    response = rino.urlread2(strcat(rino.api,'/files/get_metadata/'),'POST', rino.savejson('', struct('id', ID)), headers);
-
+    try
+        response = rino.urlread2(strcat(rino.api,'/files/get_metadata/'),'POST', rino.savejson('', struct('id', ID)), headers);
+    catch
+        warning('An error occured and your computer did not connect to Rinocloud.');
+    end
+    
     try
         response_struct = rino.loadjson(response);
     catch
+        try
         response_struct = response;
+        catch
+            warning('An error occured and your computer did not recieve a response from Rinocloud.');
+            response_struct='error';
+        end
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
