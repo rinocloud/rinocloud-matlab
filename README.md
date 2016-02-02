@@ -32,8 +32,8 @@ First, add the Rinocloud-MATLAB integration folder to your MATLAB path:
 The Rinocloud library should now be accessible from MATLAB. Check by typing the following into your console:
 
 ```
->>> rino.version()
->>> '0.0.1'
+>>> rino.version
+ '0.0.1'
 ```
 
 ### Authentication
@@ -48,7 +48,9 @@ https://<yourproject>.rinocloud.com/integrations/
 Enter your API Token as a string into the authentication function (remember to include quote marks to make the input a string):
 
 ```python
-rino.authentication('Your API Token');
+>>> rino.authentication('Your API Token');
+
+API Token set.
 ```
 
 You should keep this token secret, anyone with access to the API token can see and modify your data.

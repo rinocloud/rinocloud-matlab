@@ -1,8 +1,6 @@
-function [ output_args ] = version( ~ )
+function [  ] = version( ~ )
 %version - Gives the current version of the Rinocloud-MATLAB Integration
-output_args = '0.0.1';
-
-
+disp(sprintf ( '\n0.0.1') )    
 
 end
 
