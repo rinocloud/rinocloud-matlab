@@ -1,24 +1,25 @@
-function [ response_struct ] = update_metadata(ID, metadata )
-%update_metadata - used to update the metadata of an object. You must
-%specify the object ID and the new metadata as a struct.
+function [ response_struct ] = append( ID, chunk)
+%UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
     %Check inputs
     checkID(ID);
-    checkmetadata(metadata);
 
-    %Get APIToken
+        %Get APIToken
     APIToken = rino.authentication;
     
     %JSONify metadata_struct
-    metadatajson = rino.savejson('', rino.catstruct(struct('metadata', metadata), struct('id', ID)), struct('Compact', 1));
+    metadatajson = rino.savejson('', rino.catstruct(struct('chunk', chunk), struct('id', ID)), struct('Compact', 1));
     
     %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
 
-    %Make post request
+
+
+    
+        %Make post request
     try
-        response = rino.urlread2(strcat(rino.api,'/files/update_metadata/'),'POST',metadatajson, headers);
+        response = rino.urlread2(strcat(rino.api,'/files/append/'),'POST',metadatajson, headers);
     catch
         warning('An error occured and your computer did not connect to Rinocloud.');
     end
@@ -33,7 +34,9 @@ function [ response_struct ] = update_metadata(ID, metadata )
             response_struct='error';
         end
     end
-  
+    
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs
     function TF = checkID(x)
@@ -50,14 +53,8 @@ function [ response_struct ] = update_metadata(ID, metadata )
         end
     end
 
-    function TF = checkmetadata(x)
-        TF = false;
-        if isstruct(x)
-            TF = true;
-        else
-            error('The metadata should be passed to the update_metadata function as a structure array. See http://uk.mathworks.com/help/matlab/ref/struct.html for information of how to create structure arrays.');
-        end
-    end
+
+
 
 end
 
