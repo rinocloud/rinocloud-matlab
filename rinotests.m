@@ -126,6 +126,16 @@ else
     Worked=false;
 end
 
+%test create_empty
+disp(sprintf ( '\nTesting create_empty...') );
+Response=rino.create_empty('testempty', 'metadata', struct('Param1', 'Value 1', 'Param2', 'Value2'), 'tags',{'a', 'b'},'parent', FileID);
+if strcmp(Response.metadata.Param1, 'Value 1')
+    disp(sprintf('\tTest passed'));
+else
+    warning('create_empty test failed')
+    Worked=false;
+end
+
 
 if Worked==true
     disp(sprintf ( '\nAll tests were successful - you are ready to start using Rinocloud!') );
