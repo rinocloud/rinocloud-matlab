@@ -1,11 +1,14 @@
 function [ output_args ] = rinotests( ~ )
 %UNTITLED11 Summary of this function goes here
 %   Detailed explanation goes here
-
-if strcmp(rino.authentication(),'Token a377055b6aecc41f00038c4cd48169b6b55b3d78')==0
-    error('Replace the API Token in the rino.authentication function with "a377055b6aecc41f00038c4cd48169b6b55b3d78" in order to run tests.')
+try
+    UsersAPIKey = rino.authentication();
+catch
+    UsersAPIKey = '0000000000000000000000000000';
 end
 
+disp(sprintf ( '\nSetting test API token.') );
+rino.authentication('a377055b6aecc41f00038c4cd48169b6b55b3d78');
 Worked=true;
 
 % random string so we identify this tests from other.
@@ -150,6 +153,9 @@ if Worked==true
 else
     disp(sprintf ( '\nOne or more tests failed.') );
 end
+
+disp(sprintf ( '\nResetting API token.') );
+rino.authentication(UsersAPIKey);
 
 end
 

@@ -12,7 +12,7 @@ function [ output_args ] = authentication( APIToken )
     
     if nargin == 0
     
-    if length(APITokenOut) == 0
+    if length(APITokenOut) == 0 || strcmp(APITokenOut, '0000000000000000000000000000')
         error('Please set your API Token.')
     end
 
