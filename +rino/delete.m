@@ -8,7 +8,7 @@ function [ response_struct ] = delete(ID)
     try
     %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
-    response = rino.urlread2(strcat(rino.api,'/files/delete/'),'POST', rino.savejson('', struct('id', ID)), headers);
+    response = rino.urlread2(strcat(rino.api,'/files/delete/'),'POST', savejson('', struct('id', ID)), headers);
 
     if isempty(response)
         response_struct = 'Object deleted';

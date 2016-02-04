@@ -38,7 +38,7 @@ function [ response_struct ] = create_empty( name, varargin )
     
         %JSONify metadata and tags
     
-    metadatajson = rino.savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, struct('name',name), parentstruct), struct('Compact', 1));
+    metadatajson = savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, struct('name',name), parentstruct), struct('Compact', 1));
  
  
      %Get APIToken
@@ -51,7 +51,7 @@ try
     response = rino.urlread2(strcat(rino.api,'/files/create_empty/'),'POST',metadatajson , headers);
     
     try
-        response_struct = rino.loadjson(response);
+        response_struct = loadjson(response);
     catch
         response_struct = response;
     end

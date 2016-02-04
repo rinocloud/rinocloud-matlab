@@ -9,7 +9,7 @@ function [ response_struct ] = append( ID, chunk)
     APIToken = rino.authentication;
     
     %JSONify metadata_struct
-    metadatajson = rino.savejson('', rino.catstruct(struct('chunk', chunk), struct('id', ID)), struct('Compact', 1));
+    metadatajson = savejson('', rino.catstruct(struct('chunk', chunk), struct('id', ID)), struct('Compact', 1));
     
     %Prepare http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
@@ -25,7 +25,7 @@ function [ response_struct ] = append( ID, chunk)
     end
 
     try
-        response_struct = rino.loadjson(response);
+        response_struct = loadjson(response);
     catch
         try
             response_struct = response;

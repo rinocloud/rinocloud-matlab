@@ -16,7 +16,7 @@ function [ response_struct ] = get_metadata(ID)
     end
     
     try
-        response_struct = rino.loadjson(response);
+        response_struct = loadjson(response);
     catch
         try
         response_struct = response;

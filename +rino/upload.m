@@ -50,7 +50,7 @@ function [ response_struct ] = upload(fname, varargin)
     
     %JSONify metadata and tags
     
-    metadatajson = rino.savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, namestruct, parentstruct), struct('Compact', 1));
+    metadatajson = savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, namestruct, parentstruct), struct('Compact', 1));
         
     %Set http request headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json'), rino.http_createHeader('rinocloud-api-payload', metadatajson)];
@@ -63,7 +63,7 @@ function [ response_struct ] = upload(fname, varargin)
     end
         
     try
-        response_struct = rino.loadjson(response);
+        response_struct = loadjson(response);
     catch
         try
         response_struct = response;

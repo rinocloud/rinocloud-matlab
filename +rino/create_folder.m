@@ -13,7 +13,7 @@ try
     response = rino.urlread2(strcat(rino.api,'/files/create_folder/'),'POST',savejson('', struct('name',folder_name)), headers);
     
     try
-        response_struct = rino.loadjson(response);
+        response_struct = loadjson(response);
     catch
         response_struct = response;
     end
