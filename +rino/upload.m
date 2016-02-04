@@ -51,7 +51,15 @@ function [ response_struct ] = upload(fname, varargin)
     %JSONify metadata and tags
     
     metadatajson = savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, namestruct, parentstruct), struct('Compact', 1));
-        
+      
+    fileID = fopen([namestruct.name, '.json'],'w');
+	fwrite(fileID, metadatajson);
+	fclose(fileID);
+    
+    fileID = fopen([namestruct.name, '.json'],'w');
+	fwrite(fileID, metadatajson);
+	fclose(fileID);
+    
     %Set http request headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json'), rino.http_createHeader('rinocloud-api-payload', metadatajson)];
 
