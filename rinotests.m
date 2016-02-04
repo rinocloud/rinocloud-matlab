@@ -157,5 +157,17 @@ end
 disp(sprintf ( '\nResetting API token.') );
 rino.authentication(UsersAPIKey);
 
+while true
+    x = input('Do you want to save your current MATLAB path in order to permenantly \nadd the Rinocloud-MATLAB Integration to your MATLAB path? \n(Enter ''yes'' or ''no'' as a string.)\n');
+    if strcmp(x, 'yes')
+        savepath
+        break
+    elseif strcmp(x, 'no')
+        break
+    else
+        disp(sprintf ( '\nPlease enter only ''yes'' or ''no'' as a string.') );   
+    end
+        
+end
 end
 
