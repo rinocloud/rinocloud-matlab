@@ -21,7 +21,7 @@ function [ response_struct ] = delete(ID)
         end
     end
     catch
-         warning('An error occured.');
+         warning('An error occured - the object may not have been deleted.');
          response_struct='error';
     end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

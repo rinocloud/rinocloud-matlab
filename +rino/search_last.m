@@ -18,7 +18,7 @@ function [ ids ] = search_last(number)
             ids{tt}=result{tt}.id;
         end
     catch
-        warning('An error occured.');
+        warning('An error occured and search_last did not recieve a list of ocject IDs from Rinocloud.');
     end
 end
 

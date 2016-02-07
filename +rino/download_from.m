@@ -27,18 +27,21 @@ function [ output ] = download_from( ID, from, varargin )
 try
     %download data
     downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID, '&from=', from),'GET', '', headers,'CAST_OUTPUT', true);
-    
+catch
+    warning('An error occurred and you computer did not connect to Rinocloud.') 
+end
+
+try
     if sum(size(input.format)) > 0
             output = textscan(downloadeddata, input.format);
     else
             output = downloadeddata;
     end
-    
 catch
-         warning('An error occured.');
+         warning('An error occured and your computer did not recieve a response from Rinocloud.');
          output = 'error.';
-    
 end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs
     function TF = checkID(x)

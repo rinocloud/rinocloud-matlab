@@ -1,4 +1,4 @@
-function [ output_args ] = rinotests( ~ )
+function [ output_args ] = tests( ~ )
 %UNTITLED11 Summary of this function goes here
 %   Detailed explanation goes here
 try

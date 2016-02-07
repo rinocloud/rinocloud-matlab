@@ -22,9 +22,13 @@ function [ output ] = download(ID, varargin)
         input.tofile = false;
     end
     
-    try
+    
     % Set filename - Set file name if newname given, leave as original name if no name given
-    metadata = rino.get_metadata(ID);
+    try
+        metadata = rino.get_metadata(ID);
+    catch
+        warning('An error occurred and you computer did not connect to Rinocloud.')
+    end
     if sum(size(input.newname)) > 0
         fname=input.newname;
     else
@@ -59,9 +63,15 @@ function [ output ] = download(ID, varargin)
         ID = num2str(ID);
     end
     %download data
-    downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
-    
+    try
+        downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
+    catch
+        warning('An error occurred and you computer did not connect to Rinocloud.')
+    end
+        
+        
     %save to file or return binary data if requested
+    try
     if input.tofile == true
         fdl = fopen(fname,'wb');
         fwrite(fdl, downloadeddata);
@@ -74,11 +84,11 @@ function [ output ] = download(ID, varargin)
             output = downloadeddata;
         end
     end
-    
     catch
-         warning('An error occured.');
-         output = 'error.';
+        warning('An error occured and download could not return or save the requested data.')
+        output = 'error';
     end
+
     
     
     

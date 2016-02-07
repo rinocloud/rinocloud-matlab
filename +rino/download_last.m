@@ -39,7 +39,7 @@ function [ output ] = download_last(number ,varargin)
     
     output={};
     %Loop to multi_download
-    try
+   
     for mm=1:length(ids)
         
         
@@ -96,10 +96,7 @@ function [ output ] = download_last(number ,varargin)
     if length(output)==1
         output=output{1};
     end
-    catch
-         warning('An error occured.');
-         output='error.';
-    end
+
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs

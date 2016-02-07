@@ -56,7 +56,7 @@ try
         response_struct = response;
     end
 catch
-     warning('An error occured.');
+     warning('An error occured and your computer could not connect to Rinocloud.');
      response_struct='error.';
 end
  
