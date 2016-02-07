@@ -4,7 +4,8 @@ function [ output_args ] = tests( ~ )
 %entering rino.tests
 
 try
-    UsersAPIKey = rino.authentication();
+    C = strsplit(rino.authentication(),' ');
+    UsersAPIKey = C{2};
 catch
     UsersAPIKey = '0000000000000000000000000000';
 end

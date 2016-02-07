@@ -1,12 +1,8 @@
 function [ response_struct ] = create_folder( folder_name, varargin )
-% create_folder -  creates a folder
-%   create_folder takes on argument (the folder name) and one optional 
-%   argument, the id of the folders parent folder. e.g. to create a folder
-%   called 'new data' inside a parent folder with ID=7575, enter
-%   rino.create_folder('new data', 'parent', '7575');
+%UNTITLED10 Summary of this function goes here
+%   Detailed explanation goes here
 
     checkfoldername(folder_name);
-    p = inputParser;
     addParamValue(p,'parent','',@checkparent);
     p.parse(varargin{:});
     input=p.Results;
@@ -25,7 +21,7 @@ function [ response_struct ] = create_folder( folder_name, varargin )
     %create http headers
     headers = [rino.http_createHeader('Authorization',APIToken), rino.http_createHeader('Content-Type','application/json')];
 try
-    response = rino.urlread2(strcat(rino.api,'/files/create_folder/'),'POST',savejson('', rino.catstruct(struct('name',folder_name), parentstruct)), headers);
+    response = rino.urlread2(strcat(rino.api,'/files/create_folder/'),'POST',savejson('', struct('name',folder_name)), headers);
     
     try
         response_struct = loadjson(response);
