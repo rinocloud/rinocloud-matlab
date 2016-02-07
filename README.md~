@@ -50,7 +50,7 @@ be given the option to save your MATLAB path. If you want to do this, enter
 'yes' as a string - this means you won't have to add the rinocloud-matlab 
 intergration to you MATLAB path every time you restart MATLAB. 
 
-If you don't want to do this, enter 'no'.
+If you 
 
 
 
