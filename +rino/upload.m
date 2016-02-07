@@ -1,6 +1,16 @@
 function [ response_struct ] = upload(fname, varargin)
 %upload - used to upload files to rinocloud
-%   Full description from MD text
+%   The upload function is used to upload files to Rinocloud. The only
+%   required argument is the filename as a string - e.g.
+%   rino.upload('logo.png'). However, the function also takes the following
+%   optional arguments:
+%   metadata - passed to the function as a struct containing key value pairs. e.g. rino.upload('logo.png', 'metadata', struct('Temperature', '5 K') )
+%   tags - passed to the function as a cell array of strings. e.g. rino.upload('logo.png', 'tags', {'good data', 'test tag'})
+%   newname - passed to the function as a string - the new name that the file will be saved with. e.g. rino.upload('logo.png', 'newname', 'rinocloudlogo.png')
+%   parent - a number specifying the object id of the folder that you want the file to be saved into. e.g. rino.upload('logo.png', 'parent', 6667)
+    
+
+
 
     %Parse the input and validate optional arguments
     p = inputParser;
