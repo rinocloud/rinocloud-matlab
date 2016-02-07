@@ -23,8 +23,8 @@ st = symbols(nums);
 
 % Test create folder
 disp(sprintf ( '\nTesting create_folder...') );
-returned_meta = rino.create_folder(strcat('Test_folder_',st));
-if strcmp(returned_meta.name, strcat('Test_folder_',st))==1
+returned_meta = rino.create_folder('Test_folder');
+if strcmp(returned_meta.name, 'Test_folder')==1
     disp(sprintf('\tTest passed'));
 else
     warning('create_folder test failed')
@@ -159,6 +159,9 @@ end
 
 disp(sprintf ( '\nResetting API token.') );
 rino.authentication(UsersAPIKey);
+
+%delete created files
+delete('logo.png.json', strcat('logo_',st,'.png.json'));
 
 while true
     x = input('Do you want to save your current MATLAB path in order to permenantly \nadd the Rinocloud-MATLAB Integration to your MATLAB path? \n(Enter ''yes'' or ''no'' as a string.)\n');
