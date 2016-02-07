@@ -1,6 +1,10 @@
 function [ response_struct ] = create_empty( name, varargin )
-%UNTITLED8 Summary of this function goes here
-%   Detailed explanation goes here
+%create_empty -  creates an empty file.
+%   create_empty has one required argument, the file name. It also has the
+%   following optional arguments:
+%   metadata - passed to the function as a struct containing key value pairs. e.g. rino.create_empty('recorded.txt', 'metadata', struct('Temperature', '5 K') )
+%   tags - passed to the function as a cell array of strings. e.g. rino.create_empty('recorded.txt', 'tags', {'good data', 'test tag'})
+%   parent - a number specifying the object id of the folder that you want the file to be saved into. e.g. rino.create_empty('recorded.txt', 'parent', 6667)
 
  checkname(name);
  

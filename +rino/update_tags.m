@@ -1,6 +1,8 @@
 function [ response_struct ] = update_tags( ID, tags )
 %update_tags - overwrites old tags with new specified tags.
-%   Detailed explanation goes here
+%   Takes two arguments - object ID of the object to be updated and the new
+%   tags as a cell array of strings. e.g. rino.update_tags(657, {'newtag1',
+%   'newtag2'});
 
     %Check inputs
     checkID(ID);

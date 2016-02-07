@@ -1,9 +1,26 @@
 function [ output ] = download_last(number ,varargin)
-% download -  downloads the file specifed by the object id to the current
-% working directory
-%   Detailed explanation goes here
+% download_last -  downloads the most recently upladed files (specified by 
+%   the number passed to the function) to the current working directory.
+%   download_last has one required argument, the number of objects to
+%   download - e.g. rino.download_last(4) downloads the 4 most recently
+%   uploaded files.
+%   download_last also takes the following optional arguments:
+%   totext - setting totext to be true casts the downloaded data to text -
+%   e.g. rino.download_last(1, 'totext', true). Otherwise the data will be
+%   treated as uint8. Sepecifing totext to be true automaticaly sets tofile
+%   to be false.
+%   tofile - by default this is set to true, if it is set to false, the
+%   downloaded data to read into a MATLAB variable and not saved to a file.
+%   e.g. rino.download_last(1, 'tofile', false).
+%   format - this is passed to the function as a string. The format string
+%   specifys the th format of data saved in a text file. Giving a format
+%   string automatically tells the function to read the data into a matlab
+%   array. For example, if the last uploaded object is a text file
+%   containing two columns of floating point numbers separated by a space,
+%   in order to read them into a variable we woud enter:
+%   rino.download_last(1, 'format', '%f %f');
 
-    %if only key-value pairs included, download most recent.
+
 
 
     checknumber(number);

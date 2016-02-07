@@ -1,6 +1,8 @@
 function [ response_struct ] = delete(ID)
 %delete - deletes object specified by given object ID
-%   Detailed explanation goes here
+%   delete takes one argument, the object ID of the object to be deleted.
+%   e.g. rino.delete(7676) deletes the object 7676.
+
     checkID(ID);
 
     %Get APIToken

@@ -1,6 +1,8 @@
 function [ output_args ] = tests( ~ )
-%UNTITLED11 Summary of this function goes here
-%   Detailed explanation goes here
+%tests - test if the functions in the rinocloud-matlab integration are
+%working and give the user the option to save their matlab path. Called by
+%entering rino.tests
+
 try
     UsersAPIKey = rino.authentication();
 catch

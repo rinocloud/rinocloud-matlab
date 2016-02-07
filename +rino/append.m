@@ -1,6 +1,7 @@
 function [ response_struct ] = append( ID, chunk)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+%append - appends data to an existing file.
+%   append takes two arguments, the ID of the file to be appended to and
+%   the chunk of data to be appended.
 
     %Check inputs
     checkID(ID);

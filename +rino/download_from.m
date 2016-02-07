@@ -1,6 +1,14 @@
 function [ output ] = download_from( ID, from, varargin )
-%UNTITLED4 Summary of this function goes here
-%   Detailed explanation goes here
+%download_from downloads data from a text file from a specified location
+%until the end of the file.
+%   download_from downloads data from a text file from a specified location
+%   until the end of the file. This is useful for live plotting/updating.
+%   The function takes two input arguments and an optional third format
+%   argumment. The required arguments are the object ID of the file to
+%   download and the size in bytes of the first part of the file to ignore.
+%   The optional argument is the format string. For example, to download a
+%   a file (object ID - 7575) of two columns of space separated floating point numbers from 
+%   the 800 byte mark, we enter rino.download_from(7575, 800, 'format', '%f %f')
 
     %Check inputs
 

@@ -1,7 +1,23 @@
 function [ output ] = download(ID, varargin)
 % download -  downloads the file specifed by the object id to the current
 % working directory
-%   Detailed explanation goes here
+ %  download has one required argument, the object ID of the files to
+ %  download.
+%   download also takes the following optional arguments:
+%   totext - setting totext to be true casts the downloaded data to text -
+%   e.g. rino.download(575, 'totext', true). Otherwise the data will be
+%   treated as uint8. Sepecifing totext to be true automaticaly sets tofile
+%   to be false.
+%   tofile - by default this is set to true, if it is set to false, the
+%   downloaded data to read into a MATLAB variable and not saved to a file.
+%   e.g. rino.download(575, 'tofile', false).
+%   format - this is passed to the function as a string. The format string
+%   specifys the the format of data saved in a text file. Giving a format
+%   string automatically tells the function to read the data into a matlab
+%   array. For example, if the object 6767 is a text file
+%   containing two columns of floating point numbers separated by a space,
+%   in order to read them into a variable we woud enter:
+%   rino.download(6767, 'format', '%f %f');
     
     checkID(ID);
 

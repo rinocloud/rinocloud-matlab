@@ -1,6 +1,6 @@
 function [ response_struct ] = get_metadata(ID)
-% get_metadata - returns the metadata for a given object
-%   Detailed explanation goes here
+% get_metadata - returns the metadata for a given object ID
+%   e.g. rino.get_metadata(6645);
 
     checkID(ID);
 

@@ -1,6 +1,9 @@
 function [ response ] = set(ID, param, value)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+%set - sets a metadata parameter.
+%   The set function is a shortcut to the update_metadata function. 
+%   The function takes three input arguments, the ID of the object to be
+%   updated, the parameter name of the metadata to be updated and the new
+%   metadata variable. e.g. rino.set(6479, 'power', '6 nW');
 
 checkID(ID);
 checkparam(param);

@@ -1,6 +1,12 @@
 function [ response_struct ] = create_object( name, varargin  )
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%create_object - This function creates an object with noassociated file, it
+%just contains metadata. 
+%   create_object has one required argument, the name of the object as a
+%   string. It also takes the following optional arguments:
+%   metadata - passed to the function as a struct containing key value pairs. e.g. rino.create_object('ControlObj', 'metadata', struct('Temperature', '5 K') )
+%   tags - passed to the function as a cell array of strings. e.g. rino.create_object('ControlObj', 'tags', {'good data', 'test tag'})
+%   parent - a number specifying the object id of the folder that you want the object to be saved into. e.g. rino.create_object('ControlObj', 'parent', 6667)
+
 
  checkname(name);
  

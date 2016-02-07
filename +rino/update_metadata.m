@@ -1,7 +1,8 @@
 function [ response_struct ] = update_metadata(ID, metadata )
-%update_metadata - used to update the metadata of an object. You must
-%specify the object ID and the new metadata as a struct.
-%   Detailed explanation goes here
+%update_metadata - used to update the metadata of an object. 
+%   update_metadata takes two arguments. The object ID of the object to be 
+%   updated and the new metadata as a structure array. e.g
+%   rino.update_metadata(6473, struct('Power', '7 mW'));
 
     %Check inputs
     checkID(ID);
