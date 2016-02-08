@@ -10,7 +10,9 @@ function [ response_struct ] = upload(fname, varargin)
 %   parent - a number specifying the object id of the folder that you want the file to be saved into. e.g. rino.upload('logo.png', 'parent', 6667)
     
 
-
+    if exist(fname, 'file') ~= 2
+        error('Matlab could not find the file you specified - make sure that the file name is spelt correctly and includes the file extension. The file should be in your current folder or you should specify the full file path.')
+    end
 
     %Parse the input and validate optional arguments
     p = inputParser;
