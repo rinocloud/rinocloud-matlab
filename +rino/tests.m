@@ -35,7 +35,7 @@ FileID=returned_meta.id;
 %Test upload
 disp(sprintf ( '\nTesting simple upload...') );
 returned_meta=rino.upload('logo.png');
-if strcmp(returned_meta.name, 'logo.png')==1
+if isnumeric(returned_meta.id)
     disp(sprintf('\tTest passed'));
 else
     warning('Simple upload test failed')
