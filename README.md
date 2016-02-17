@@ -52,10 +52,6 @@ intergration to you MATLAB path every time you restart MATLAB.
 
 If you don't want to do this, enter 'no'.
 
-
-
-Remember to change the API Token back after you have finished running the tests, as all the test data is deleted periodically.
-
 ### Authentication
 
 To get your API token; sign into your Rinocloud project and go to the 'Integrations' page. Its
@@ -77,7 +73,7 @@ You should keep this token secret, anyone with access to the API token can see a
 
 **That's it!** You're all set up and ready to go. See below for guides to using the different functions in the Rinocloud-MATLAB Interface.
 
-Here is a super simple example of creating a folder and uploading some files with metadata to Rinocloud
+Here is a simple example of creating a folder and uploading some files with metadata to Rinocloud:
 
 ```python
 rino.authentication('Your API Token');
@@ -200,7 +196,7 @@ rino.download(7664, 'newname', 'spectrum.txt');
 
 ### Download into a variable
 
-If we simply wanted to read the text straight into a MATLAB variable, "DATA", we would type:
+If we simply wanted to read the text straight into a MATLAB variable, "data", we would type:
 
 ```python
 data = rino.download(7664, 'tofile', false);
@@ -218,7 +214,7 @@ Sometimes we will want the data to be parsed and read into a Matlab variable rea
 data = rino.download(7664, 'format', '%f %f);
 ```
 
-Would read a file containing two columns of floating point numbers separated by a space into a Matlab array.
+Would read a file containing two columns of floating point numbers separated by a space into a Matlab array. For more information about format strings in MATLAB, got to [The MATLAB Formatting Strings support page](http://uk.mathworks.com/help/matlab/matlab_prog/formatting-strings.html).
 
 ### Download most recent
 
@@ -227,9 +223,7 @@ The download the most recently uploaded file to your current folder, you can ent
 ```python
 rino.download_last(1);
 ```
-
 or
-
 ```python
 rino.download_last(4); % will download last 4 files
 ```
@@ -238,7 +232,7 @@ The function also takes the "tofile" and "totext" and 'format' arguments in the 
 
 ### Download most recent and plot
 
-To plot the most recent data you could go:
+To plot the most recently uploaded data (composed of two columns of floating point numbers separated by a space), you could enter:
 
 
 ```python
