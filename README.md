@@ -171,7 +171,7 @@ tags = {'image', 'logo'};
 metadata = struct('size', 'small', 'colour', 'purple');
 folder_id = 865;
 
-rino.upload(logo.png, 'newname', 'RinoLogo.png', 'tags', tags, 'metadata', metadata, 'parent', folder_id);
+rino.upload('logo.png', 'newname', 'RinoLogo.png', 'tags', tags, 'metadata', metadata, 'parent', folder_id);
 ```
 
 ## Downloading files
@@ -211,7 +211,7 @@ data = rino.download(7664, 'totext', true);
 Sometimes we will want the data to be parsed and read into a Matlab variable ready for plotting. If you specify the format of the data using a format string, the data will be read into a Matlab variable. For example:
 
 ```python
-data = rino.download(7664, 'format', '%f %f);
+data = rino.download(7664, 'format', '%f %f');
 ```
 
 Would read a file containing two columns of floating point numbers separated by a space into a Matlab array. For more information about format strings in MATLAB, got to [The MATLAB Formatting Strings support page](http://uk.mathworks.com/help/matlab/matlab_prog/formatting-strings.html).

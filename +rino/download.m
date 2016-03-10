@@ -40,11 +40,9 @@ function [ output ] = download(ID, varargin)
     
     
     % Set filename - Set file name if newname given, leave as original name if no name given
-    try
-        metadata = rino.get_metadata(ID);
-    catch
-        warning('An error occurred and you computer did not connect to Rinocloud.')
-    end
+
+    metadata = rino.get_metadata(ID);
+
     if sum(size(input.newname)) > 0
         fname=input.newname;
     else
