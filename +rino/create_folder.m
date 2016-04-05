@@ -18,6 +18,8 @@ function [ response_struct ] = create_folder( folder_name, varargin )
     %set parent struct
     if sum(size(input.parent)) > 0
         parentstruct = struct('parent',input.parent);
+    elseif rino.setparent() ~= 0
+        parentstruct = struct('parent',rino.setparent());
     else
         parentstruct = struct();
     end
