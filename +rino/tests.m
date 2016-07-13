@@ -21,8 +21,6 @@ function [ output_args ] = tests( ~ )
   disp(sprintf ( '\nTesting create_folder...') );
   returned_meta = rino.create_folder('Test_folder');
 
-
-
   if strcmp(returned_meta.name, 'Test_folder')==1
       disp(sprintf('\tTest passed'));
   else
@@ -33,7 +31,7 @@ function [ output_args ] = tests( ~ )
 
   %Test upload
   disp(sprintf ( '\nTesting simple upload...') );
-  returned_meta=rino.upload('logo.png');
+  returned_meta=rino.upload('README.md');
   if isnumeric(returned_meta.id)
       disp(sprintf('\tTest passed'));
   else
@@ -44,7 +42,7 @@ function [ output_args ] = tests( ~ )
   logoID=returned_meta.id;
 
   disp(sprintf ( '\nTesting upload with new name...') );
-  returned_meta=rino.upload('logo.png','newname',strcat('logo_',st,'.png'));
+  returned_meta=rino.upload('README.md','newname',strcat('logo_',st,'.png'));
   if strcmp(returned_meta.name, strcat('logo_',st,'.png'))==1
       disp(sprintf('\tTest passed'));
   else
@@ -53,7 +51,7 @@ function [ output_args ] = tests( ~ )
   end
 
   disp(sprintf ( '\nTesting upload to specified folder...') );
-  returned_meta=rino.upload('logo.png','parent',FileID);
+  returned_meta=rino.upload('README.md','parent',FileID);
   if returned_meta.parent == FileID
       disp(sprintf('\tTest passed'));
   else
@@ -62,7 +60,7 @@ function [ output_args ] = tests( ~ )
   end
 
   disp(sprintf ( '\nTesting upload with tags...') );
-  returned_meta=rino.upload('logo.png','tags',{'Testtag1','Testtag2'});
+  returned_meta=rino.upload('README.md','tags',{'Testtag1','Testtag2'});
   if strcmp(returned_meta.tags{2}, 'Testtag2')==1
       disp(sprintf('\tTest passed'));
   else
@@ -71,7 +69,7 @@ function [ output_args ] = tests( ~ )
   end
 
   disp(sprintf ( '\nTesting upload with metadata...') );
-  returned_meta=rino.upload('logo.png','metadata',struct('testfield1','testvalue1'));
+  returned_meta=rino.upload('README.md','metadata',struct('testfield1','testvalue1'));
   if strcmp(returned_meta.metadata.testfield1, 'testvalue1')==1
       disp(sprintf('\tTest passed'));
   else
@@ -101,7 +99,7 @@ function [ output_args ] = tests( ~ )
 
   %test search last
   disp(sprintf ( '\nTesting search_last...') );
-  returned_meta=rino.upload('logo.png');
+  returned_meta=rino.upload('README.md');
   search_result=rino.search_last(1);
 
   if search_result{1}==returned_meta.id
@@ -160,8 +158,7 @@ function [ output_args ] = tests( ~ )
   rino.authentication(UsersAPIKey);
 
   %delete created files
-  delete('logo.png.json', strcat('logo_',st,'.png.json'));
-
+  delete('README.md.json', strcat('logo_',st,'.png.json'));
 
   prompt = 'Do you want rinocloud to add itself to your MATLAB path? y/n [y]: ';
   str = input(prompt,'s');

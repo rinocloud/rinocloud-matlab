@@ -45,10 +45,10 @@ You can do this by running the tests.m function. Enter:
 rino.tests
 ```
 
-If everything is setup correctly, all the test should be passed and you will 
-be given the option to save your MATLAB path. If you want to do this, enter 
-'yes' as a string - this means you won't have to add the rinocloud-matlab 
-intergration to you MATLAB path every time you restart MATLAB. 
+If everything is setup correctly, all the test should be passed and you will
+be given the option to save your MATLAB path. If you want to do this, enter
+'yes' as a string - this means you won't have to add the rinocloud-matlab
+intergration to you MATLAB path every time you restart MATLAB.
 
 If you don't want to do this, enter 'no'.
 
@@ -150,7 +150,6 @@ rino_response =
             shared: 0
             parent: 1
             tags: {'apples'  'oranges'}
-
 ```
 
 ### Getting the id of the uploaded file
@@ -172,6 +171,30 @@ metadata = struct('size', 'small', 'colour', 'purple');
 folder_id = 865;
 
 rino.upload('logo.png', 'newname', 'RinoLogo.png', 'tags', tags, 'metadata', metadata, 'parent', folder_id);
+```
+
+## Getting metadata
+
+Get the metadata of a specific file/object by using the `get_metadata` function
+
+```python
+
+>>> rino_response = rino.get_metadata(848)
+>>> rino_response =
+            id: 848
+            metadata: [1x1 struct]
+            name: 'logo.png'
+            size: 11433
+            type: 'file'
+            project: 1
+            project_name: 'test'
+            owner: 'test_user'
+            created_on: '2016-01-25T11:33:44.098427Z'
+            updated_on: '2016-01-25T11:33:44.098457Z'
+            shared: 0
+            parent: 1
+            tags: {'apples'  'oranges'}
+
 ```
 
 ## Downloading files
