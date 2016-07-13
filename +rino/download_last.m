@@ -96,7 +96,11 @@ function [ output ] = download_last(number ,varargin)
         %save to file or return binary data if requested
 
         if input.tofile == true
-            fdl = fopen(fname,'wb');
+            newDir = 'rinodata';
+            if ~exist(newDir, 'dir')
+                mkdir(newDir);
+            end
+            fdl = fopen([newDir, '/', fname],'wb');
             fwrite(fdl, downloadeddata);
             fclose(fdl);
             output{mm}=setfield(metadata, 'name', fname);

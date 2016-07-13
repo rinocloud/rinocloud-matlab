@@ -64,11 +64,7 @@ function [ response_struct ] = upload(fname, varargin)
     
     metadatajson = savejson('', rino.catstruct(struct('metadata', metadata), tagsstruct, namestruct, parentstruct), struct('Compact', 1));
       
-    fileID = fopen([namestruct.name, '.json'],'w');
-	fwrite(fileID, metadatajson);
-	fclose(fileID);
-    
-    fileID = fopen([namestruct.name, '.json'],'w');
+    fileID = fopen([fname, '.json'],'w');
 	fwrite(fileID, metadatajson);
 	fclose(fileID);
     

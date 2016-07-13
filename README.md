@@ -178,9 +178,13 @@ rino.upload('logo.png', 'newname', 'RinoLogo.png', 'tags', tags, 'metadata', met
 Get the metadata of a specific file/object by using the `get_metadata` function
 
 ```python
+rino_response = rino.get_metadata(848)
+```
 
->>> rino_response = rino.get_metadata(848)
->>> rino_response =
+Will set the reponse to:
+
+```python
+rino_response =
             id: 848
             metadata: [1x1 struct]
             name: 'logo.png'
@@ -194,10 +198,29 @@ Get the metadata of a specific file/object by using the `get_metadata` function
             shared: 0
             parent: 1
             tags: {'apples'  'oranges'}
+```
 
+## Getting children
+
+
+You can get the children of any folder by using
+
+```python
+rino_response = rino.children(1111)
+```
+
+`rino_response` is then a list of metadata structs.
+
+You can pass in an extra argument so that children will recursively get all the children of all the subfolders of the folder you're targeting
+
+```python
+rino_response = rino.children(1111, 1) % this will act recursively
 ```
 
 ## Downloading files
+
+By default Rinocloud-MATLAB will download all files into a `rinodata` folder, relative to the folder where you are running your code.
+To save to a different location, use the `newname` option.
 
 ### Download a single Rinocloud file
 
@@ -263,8 +286,6 @@ To plot the most recently uploaded data (composed of two columns of floating poi
 data = rino.download_last(1, 'format', '%f %f');
 plot(data{1}, data{2})
 ```
-
-
 
 ## Updating
 

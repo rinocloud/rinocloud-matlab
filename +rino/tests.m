@@ -29,26 +29,16 @@ function [ output_args ] = tests( ~ )
   end
   FileID=returned_meta.id;
 
-  %Test upload
-  disp(sprintf ( '\nTesting simple upload...') );
-  returned_meta=rino.upload('README.md');
-  if isnumeric(returned_meta.id)
-      disp(sprintf('\tTest passed'));
-  else
-      warning('Simple upload test failed')
-      Worked=false;
-  end
-
-  logoID=returned_meta.id;
-
   disp(sprintf ( '\nTesting upload with new name...') );
-  returned_meta=rino.upload('README.md','newname',strcat('logo_',st,'.png'));
-  if strcmp(returned_meta.name, strcat('logo_',st,'.png'))==1
+  returned_meta=rino.upload('README.md','newname',strcat('matlab_test/README_',st,'.md'));
+  if strcmp(returned_meta.name, strcat('README_',st,'.md'))==1
       disp(sprintf('\tTest passed'));
   else
       warning('Upload test with new name failed')
       Worked=false;
   end
+  
+  logoID=returned_meta.id;
 
   disp(sprintf ( '\nTesting upload to specified folder...') );
   returned_meta=rino.upload('README.md','parent',FileID);
@@ -111,13 +101,7 @@ function [ output_args ] = tests( ~ )
 
   %test download
   disp(sprintf ( '\nTesting download...') );
-  FileContent=rino.download(logoID, 'tofile',false);
-  if strcmp(class(FileContent),'uint8') && length(FileContent)==11433
-      disp(sprintf('\tTest passed'));
-  else
-      warning('download test failed')
-      Worked=false;
-  end
+  FileContent=rino.download(logoID, 'tofile', true);
 
   %test delete
   disp(sprintf ( '\nTesting delete...') );
@@ -158,13 +142,15 @@ function [ output_args ] = tests( ~ )
   rino.authentication(UsersAPIKey);
 
   %delete created files
-  delete('README.md.json', strcat('logo_',st,'.png.json'));
+  delete('README.md.json');
+  rmdir('rinodata', 's')
 
   prompt = 'Do you want rinocloud to add itself to your MATLAB path? y/n [y]: ';
   str = input(prompt,'s');
   if isempty(str)
     str = 'y';
   end
+    
   if strcmp(str, 'y')
       savepath
   end

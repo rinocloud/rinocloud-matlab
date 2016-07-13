@@ -1,46 +1,43 @@
 function [ output ] = download(ID, varargin)
-% download -  downloads the file specifed by the object id to the current
-% working directory
- %  download has one required argument, the object ID of the files to
- %  download.
-%   download also takes the following optional arguments:
-%   totext - setting totext to be true casts the downloaded data to text -
-%   e.g. rino.download(575, 'totext', true). Otherwise the data will be
-%   treated as uint8. Sepecifing totext to be true automaticaly sets tofile
-%   to be false.
-%   tofile - by default this is set to true, if it is set to false, the
-%   downloaded data to read into a MATLAB variable and not saved to a file.
-%   e.g. rino.download(575, 'tofile', false).
-%   format - this is passed to the function as a string. The format string
-%   specifys the the format of data saved in a text file. Giving a format
-%   string automatically tells the function to read the data into a matlab
-%   array. For example, if the object 6767 is a text file
-%   containing two columns of floating point numbers separated by a space,
-%   in order to read them into a variable we woud enter:
-%   rino.download(6767, 'format', '%f %f');
-    
+    % download -  downloads the file specifed by the object id to the current
+    % working directory
+    % download has one required argument, the object ID of the files to
+    % download.
+    % download also takes the following optional arguments:
+    % totext - setting totext to be true casts the downloaded data to text -
+    % e.g. rino.download(575, 'totext', true). Otherwise the data will be
+    % treated as uint8. Sepecifing totext to be true automaticaly sets tofile
+    % to be false.
+    % tofile - by default this is set to true, if it is set to false, the
+    % downloaded data to read into a MATLAB variable and not saved to a file.
+    % e.g. rino.download(575, 'tofile', false).
+    % format - this is passed to the function as a string. The format string
+    % specifys the the format of data saved in a text file. Giving a format
+    % string automatically tells the function to read the data into a matlab
+    % array. For example, if the object 6767 is a text file
+    % containing two columns of floating point numbers separated by a space,
+    % in order to read them into a variable we woud enter:
+    % rino.download(6767, 'format', '%f %f');
+
     checkID(ID);
 
-    %Parse input
     p = inputParser;
     addOptional(p, 'tofile', true, @check01)
     addOptional(p, 'totext', false, @check01)
     addParamValue(p,'newname','',@checknewname);
     addParamValue(p,'format','',@checkformat);
-    
+
     p.parse(varargin{:});
     input=p.Results;
-    
+
     if sum(size(input.format)) > 0
         input.totext = true;
     end
     if input.totext == true
         input.tofile = false;
     end
-    
-    
-    % Set filename - Set file name if newname given, leave as original name if no name given
 
+    % Set filename - Set file name if newname given, leave as original name if no name given
     metadata = rino.get_metadata(ID);
 
     if sum(size(input.newname)) > 0
@@ -66,7 +63,7 @@ function [ output ] = download(ID, varargin)
             end
         end
     end
-   
+
     %Get APIToken
     APIToken = rino.authentication;
     % create http headers
@@ -82,12 +79,16 @@ function [ output ] = download(ID, varargin)
     catch
         warning('An error occurred and you computer did not connect to Rinocloud.')
     end
-        
-        
+
+
     %save to file or return binary data if requested
     try
     if input.tofile == true
-        fdl = fopen(fname,'wb');
+        newDir = 'rinodata';
+        if ~exist(newDir, 'dir')
+            mkdir(newDir);
+        end
+        fdl = fopen([newDir, '/', fname],'wb');
         fwrite(fdl, downloadeddata);
         fclose(fdl);
         output=setfield(metadata, 'name', fname);
@@ -103,10 +104,6 @@ function [ output ] = download(ID, varargin)
         output = 'error';
     end
 
-    
-    
-    
-    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Checking inputs
     function TF = checkID(x)
@@ -140,12 +137,12 @@ function [ output ] = download(ID, varargin)
             if 2 > length(regexp(x, '\.', 'split'))
                 warning('Your new file name does not include a file extention.')
             end
-        
+
         else
             error('The new file name (newname) should be passed to the download function as a string.');
         end
     end
-   
+
     function TF = checkformat(x)
         TF = false;
         if ischar(x)
@@ -156,4 +153,3 @@ function [ output ] = download(ID, varargin)
     end
 
 end
-
