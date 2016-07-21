@@ -17,7 +17,7 @@ function [ response_struct ] = children(ID, recursive)
     top = loadjson(response);
 
     headers = [rino.http_createHeader('Authorization', APIToken), rino.http_createHeader('Content-Type','application/json')];
-    response = rino.urlread2(strcat(rino.api,'/files/children/'),'POST', savejson('', struct('id', ID)), headers);
+    response = rino.urlread2(strcat(rino.api,'/files/children/'),'POST', savejson('', struct('id', ID, 'limit', 100000)), headers);
     top_level_response = loadjson(response);
 
     response_struct = top_level_response.result;
