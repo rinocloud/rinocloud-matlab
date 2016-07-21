@@ -330,13 +330,3 @@ This function deletes a saved file. The delete function takes only the object ID
 ```python
 rino.delete(8898);
 ```
-
-
-
-## Tutorials
-
-[Adding Rinocloud to an existing MATLAB project](./adding-matlab-rinocloud-to-project.md)
-
-[Continuous logging with matlab and Rinocloud](./continuous-logging-in-matlab)
-
-[Remote control with matlab and Rinocloud](./matlab-remote-control)
