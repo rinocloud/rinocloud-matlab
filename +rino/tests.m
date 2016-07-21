@@ -7,7 +7,6 @@ function [ output_args ] = tests( ~ )
   end
 
   disp(sprintf ( '\nSetting test API token.') );
-  rino.authentication('8186755009251ef0bbb273fbc86d7b9caa228374');
   Worked=true;
 
   % random string so we identify this tests from other.
@@ -19,9 +18,9 @@ function [ output_args ] = tests( ~ )
 
   % Test create folder
   disp(sprintf ( '\nTesting create_folder...') );
-  returned_meta = rino.create_folder('Test_folder');
+  returned_meta = rino.create_folder('matlab_test');
 
-  if strcmp(returned_meta.name, 'Test_folder')==1
+  if strcmp(returned_meta.name, 'matlab_test')==1
       disp(sprintf('\tTest passed'));
   else
       warning('create_folder test failed')
@@ -37,7 +36,7 @@ function [ output_args ] = tests( ~ )
       warning('Upload test with new name failed')
       Worked=false;
   end
-  
+
   logoID=returned_meta.id;
 
   disp(sprintf ( '\nTesting upload to specified folder...') );
@@ -49,17 +48,8 @@ function [ output_args ] = tests( ~ )
       Worked=false;
   end
 
-  disp(sprintf ( '\nTesting upload with tags...') );
-  returned_meta=rino.upload('README.md','tags',{'Testtag1','Testtag2'});
-  if strcmp(returned_meta.tags{2}, 'Testtag2')==1
-      disp(sprintf('\tTest passed'));
-  else
-      warning('Upload with tags failed.')
-      Worked=false;
-  end
-
   disp(sprintf ( '\nTesting upload with metadata...') );
-  returned_meta=rino.upload('README.md','metadata',struct('testfield1','testvalue1'));
+  returned_meta=rino.upload('README.md','metadata',struct('testfield1','testvalue1'), 'newname',strcat('matlab_test/README_',st,'.md'));
   if strcmp(returned_meta.metadata.testfield1, 'testvalue1')==1
       disp(sprintf('\tTest passed'));
   else
@@ -89,7 +79,7 @@ function [ output_args ] = tests( ~ )
 
   %test search last
   disp(sprintf ( '\nTesting search_last...') );
-  returned_meta=rino.upload('README.md');
+  returned_meta=rino.upload('README.md', 'newname',strcat('matlab_test/README_SEARCH_',st,'.md'));
   search_result=rino.search_last(1);
 
   if search_result{1}==returned_meta.id
@@ -138,20 +128,9 @@ function [ output_args ] = tests( ~ )
       disp(sprintf ( '\nOne or more tests failed.') );
   end
 
-  disp(sprintf ( '\nResetting API token.') );
-  rino.authentication(UsersAPIKey);
+  rino.delete(FileID);
 
   %delete created files
   delete('README.md.json');
   rmdir('rinodata', 's')
-
-  prompt = 'Do you want rinocloud to add itself to your MATLAB path? y/n [y]: ';
-  str = input(prompt,'s');
-  if isempty(str)
-    str = 'y';
-  end
-    
-  if strcmp(str, 'y')
-      savepath
-  end
 end
