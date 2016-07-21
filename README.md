@@ -42,15 +42,9 @@ The Rinocloud-MATLAB integration should work right away, but you should test all
 You can do this by running the tests.m function. Enter:
 
 ```
-rino.tests
+rino.authentication("<your key>")
+rino.tests()
 ```
-
-If everything is setup correctly, all the test should be passed and you will
-be given the option to save your MATLAB path. If you want to do this, enter
-'yes' as a string - this means you won't have to add the rinocloud-matlab
-intergration to you MATLAB path every time you restart MATLAB.
-
-If you don't want to do this, enter 'no'.
 
 ### Authentication
 
