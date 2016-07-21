@@ -33,7 +33,7 @@ The Rinocloud library should now be accessible from MATLAB. Check by typing the 
 
 ```
 >>> rino.version
- '0.0.2'
+ '0.0.3'
 ```
 
 ## Tests
