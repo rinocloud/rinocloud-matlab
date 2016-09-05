@@ -40,6 +40,8 @@ function [ output ] = download(ID, varargin)
     % Set filename - Set file name if newname given, leave as original name if no name given
     metadata = rino.get_metadata(ID);
 
+    size_on_rinocloud = metadata.size;
+
     if sum(size(input.newname)) > 0
         fname=input.newname;
     else
@@ -73,16 +75,11 @@ function [ output ] = download(ID, varargin)
     if isnumeric(ID)
         ID = num2str(ID);
     end
-    %download data
-    try
-        downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
-    catch
-        warning('An error occurred and you computer did not connect to Rinocloud.')
-    end
 
+    downloadeddata = rino.urlread2(strcat(strcat(rino.api,'/files/download/?id='), ID),'GET', '', headers,'CAST_OUTPUT', input.totext);
 
     %save to file or return binary data if requested
-    try
+
     if input.tofile == true
         newDir = 'rinodata';
         if ~exist(newDir, 'dir')
@@ -92,16 +89,15 @@ function [ output ] = download(ID, varargin)
         fwrite(fdl, downloadeddata);
         fclose(fdl);
         output=setfield(metadata, 'name', fname);
+
+        s = dir([newDir, '/', fname]);
+        assert(size_on_rinocloud == s.bytes, 'Downloaded file size is not the same as on Rinocloud')
     else
         if sum(size(input.format)) > 0
             output = textscan(downloadeddata, input.format);
         else
             output = downloadeddata;
         end
-    end
-    catch
-        warning('An error occured and download could not return or save the requested data.')
-        output = 'error';
     end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

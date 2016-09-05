@@ -55,32 +55,30 @@ available at:
 https://<yourproject>.rinocloud.com/integrations/
 ```
 
-#### Setting the token programmatically
+#### Setting the API token
 
-Enter your API Token as a string into the authentication function (remember to include quote marks to make the input a string):
+You can enter your API Token as a string, or keep it in a config file:
+
+Entering the token as a string:
 
 ```python
->>> rino.authentication('Your API Token');
-
-API Token set.
+rino.authentication('Your API Token');
+>>> API Token set.
 ```
 
-#### Setting the token using a config file
+Or enter a path to a `rino.yaml` file
 
-This way is more useful for those sharing matlab code in a git repository.
+```python
+rino.authentication('./rino.yaml')
+>>> API Token set.
+```
 
-Just make a `rino.yaml` file in your root directory (and probably add it to you `.gitignore`), with the following content:
+If you pass no arguments rino will look in the current directory for a rino.yaml file
+
+Make a `rino.yaml` file (and probably add it to your `.gitignore`), with the following content:
 
 ```yaml
 apiToken: 'Your API Token'
-```
-
-If you then call `rino.authentication` with no arguments it will automatically look for the `rino.yaml` file.
-
-```python
->>> rino.authentication(); % no arguments
-
-API Token set.
 ```
 
 You should keep this token secret, anyone with access to the API token can see and modify your data.
